@@ -15,9 +15,6 @@ import ch.teachu.teachu_admin.client.helloworld.HelloWorldForm.MainBox.TopBox.Me
 import ch.teachu.teachu_admin.shared.helloworld.HelloWorldFormData;
 import ch.teachu.teachu_admin.shared.helloworld.IHelloWorldService;
 
-/**
- * @author rbr
- */
 @FormData(value = HelloWorldFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class HelloWorldForm extends AbstractForm {
 

@@ -12,9 +12,6 @@ import ch.teachu.teachu_admin.server.ServerSession;
 import ch.teachu.teachu_admin.shared.helloworld.HelloWorldFormData;
 import ch.teachu.teachu_admin.shared.helloworld.IHelloWorldService;
 
-/**
- * @author rbr
- */
 @RunWith(ServerTestRunner.class)
 @RunWithSubject(HelloWorldServiceTest.SUBJECT_NAME)
 @RunWithServerSession(ServerSession.class)

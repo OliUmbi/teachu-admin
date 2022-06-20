@@ -2,9 +2,6 @@ package ch.teachu.teachu_admin.shared;
 
 import org.eclipse.scout.rt.shared.AbstractIcons;
 
-/**
- * @author rbr
- */
 public class Icons extends AbstractIcons {
 
   private static final long serialVersionUID = 1L;

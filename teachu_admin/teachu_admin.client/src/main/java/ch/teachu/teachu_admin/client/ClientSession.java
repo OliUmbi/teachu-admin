@@ -7,9 +7,6 @@ import org.eclipse.scout.rt.shared.services.common.code.CODES;
 
 import ch.teachu.teachu_admin.client.Desktop;
 
-/**
- * @author rbr
- */
 public class ClientSession extends AbstractClientSession {
 
   public ClientSession() {

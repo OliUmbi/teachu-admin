@@ -5,9 +5,6 @@ import org.eclipse.scout.rt.server.session.ServerSessionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author rbr
- */
 public class ServerSession extends AbstractServerSession {
 
   private static final long serialVersionUID = 1L;

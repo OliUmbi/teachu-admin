@@ -19,8 +19,6 @@ import org.eclipse.scout.rt.server.commons.authentication.TrivialAccessControlle
 
 /**
  * This is the main server side servlet filter.
- *
- * @author rbr
  */
 public class ServerServletFilter implements Filter {
 

@@ -10,9 +10,6 @@ import org.eclipse.scout.rt.platform.text.TEXTS;
 import ch.teachu.teachu_admin.client.helloworld.HelloWorldPage;
 import ch.teachu.teachu_admin.shared.Icons;
 
-/**
- * @author rbr
- */
 @Order(1000)
 public class WorkOutline extends AbstractOutline {
 

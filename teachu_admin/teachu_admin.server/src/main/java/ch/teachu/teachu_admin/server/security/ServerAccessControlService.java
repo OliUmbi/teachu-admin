@@ -8,9 +8,6 @@ import org.eclipse.scout.rt.security.IPermissionCollection;
 import org.eclipse.scout.rt.security.PermissionLevel;
 import org.eclipse.scout.rt.shared.security.RemoteServiceAccessPermission;
 
-/**
- * @author rbr
- */
 @Replace
 public class ServerAccessControlService extends AccessControlService {
 

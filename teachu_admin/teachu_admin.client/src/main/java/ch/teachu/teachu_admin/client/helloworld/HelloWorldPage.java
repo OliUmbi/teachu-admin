@@ -4,9 +4,6 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithNode
 import org.eclipse.scout.rt.client.ui.form.IForm;
 import org.eclipse.scout.rt.platform.text.TEXTS;
 
-/**
- * @author rbr
- */
 public class HelloWorldPage extends AbstractPageWithNodes {
 
   @Override

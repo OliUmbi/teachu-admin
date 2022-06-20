@@ -12,8 +12,6 @@ import org.eclipse.scout.rt.shared.session.Sessions;
  * <p>
  * Replace this service at server side to load permission collection. It is <b>not</b> required to implement
  * {@link #execLoadPermissions(String)} at client side.
- *
- * @author rbr
  */
 public class AccessControlService extends AbstractAccessControlService<String> {
 

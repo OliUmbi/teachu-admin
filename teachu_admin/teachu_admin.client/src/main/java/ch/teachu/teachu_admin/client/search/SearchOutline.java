@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import ch.teachu.teachu_admin.shared.Icons;
 
-/**
- * @author rbr
- */
 @Order(2000)
 public class SearchOutline extends AbstractSearchOutline {
 

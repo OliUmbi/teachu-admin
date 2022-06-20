@@ -26,9 +26,6 @@ import ch.teachu.teachu_admin.client.settings.SettingsOutline;
 import ch.teachu.teachu_admin.client.work.WorkOutline;
 import ch.teachu.teachu_admin.shared.Icons;
 
-/**
- * @author rbr
- */
 public class Desktop extends AbstractDesktop {
 
   public Desktop() {

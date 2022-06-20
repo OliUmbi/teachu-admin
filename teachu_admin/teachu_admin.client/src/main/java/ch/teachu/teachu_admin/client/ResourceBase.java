@@ -5,8 +5,6 @@ package ch.teachu.teachu_admin.client;
  * package is part of the resource name.
  * <p>
  * Usage: <code>ResourceBase.class.getResource("relativeFolder/file.ext")</code>
- *
- * @author rbr
  */
 public final class ResourceBase {
   private ResourceBase() {

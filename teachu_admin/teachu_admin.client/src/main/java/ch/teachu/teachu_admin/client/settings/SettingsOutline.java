@@ -6,9 +6,6 @@ import org.eclipse.scout.rt.platform.text.TEXTS;
 
 import ch.teachu.teachu_admin.shared.Icons;
 
-/**
- * @author rbr
- */
 @Order(3000)
 public class SettingsOutline extends AbstractOutline {
 
