@@ -1,0 +1,15 @@
+package ch.teachu.teachu_admin.client;
+
+import java.net.URL;
+
+import org.eclipse.scout.rt.client.services.common.icon.AbstractIconProviderService;
+
+/**
+ * @author rbr
+ */
+public class DefaultIconProviderService extends AbstractIconProviderService {
+  @Override
+  protected URL findResource(String relativePath) {
+    return ResourceBase.class.getResource("icons/" + relativePath);
+  }
+}

@@ -1,0 +1,3 @@
+packages:
+- '.'
+- 'teachu_admin.ui.html'

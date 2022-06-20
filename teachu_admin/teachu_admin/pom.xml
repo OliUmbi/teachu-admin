@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>ch.teachu</groupId>
+    <artifactId>teachu_admin-root</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>teachu_admin</artifactId>
+  <packaging>pom</packaging>
+  <name>TeachU Admin</name>
+
+  <properties>
+    <ch.teachu.teachu_admin.version>${project.version}</ch.teachu.teachu_admin.version>
+    <jdk.source.version>11</jdk.source.version>
+    <org.eclipse.scout.rt.version>22.0.15</org.eclipse.scout.rt.version>
+    <master_npm_release_dependency_mapping>--mapping.0.regex=@eclipse-scout --mapping.0.version=${org.eclipse.scout.rt.version}</master_npm_release_dependency_mapping>
+  </properties>
+
+  <modules>
+    <module>../teachu_admin.shared</module>
+    <module>../teachu_admin.server</module>
+    <module>../teachu_admin.client</module>
+    <module>../teachu_admin.server.app.war</module>
+    <module>../teachu_admin.server.app.dev</module>
+    <module>../teachu_admin.ui.html</module>
+    <module>../teachu_admin.ui.html.app.war</module>
+    <module>../teachu_admin.ui.html.app.dev</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Scout Dependencies -->
+      <dependency>
+        <groupId>org.eclipse.scout.rt</groupId>
+        <artifactId>org.eclipse.scout.rt</artifactId>
+        <version>${org.eclipse.scout.rt.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Application Dependencies -->
+      <dependency>
+        <groupId>ch.teachu</groupId>
+        <artifactId>teachu_admin.client</artifactId>
+        <version>${ch.teachu.teachu_admin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.teachu</groupId>
+        <artifactId>teachu_admin.shared</artifactId>
+        <version>${ch.teachu.teachu_admin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.teachu</groupId>
+        <artifactId>teachu_admin.server</artifactId>
+        <version>${ch.teachu.teachu_admin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.teachu</groupId>
+        <artifactId>teachu_admin.ui.html</artifactId>
+        <version>${ch.teachu.teachu_admin.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
