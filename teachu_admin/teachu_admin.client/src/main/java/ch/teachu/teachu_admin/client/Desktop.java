@@ -1,8 +1,10 @@
 package ch.teachu.teachu_admin.client;
 
-import java.beans.PropertyChangeEvent;
-import java.util.List;
-
+import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkThemeMenu;
+import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
+import ch.teachu.teachu_admin.client.search.SearchOutline;
+import ch.teachu.teachu_admin.client.work.AdminOutline;
+import ch.teachu.teachu_admin.shared.Icons;
 import org.eclipse.scout.rt.client.session.ClientSessionProvider;
 import org.eclipse.scout.rt.client.ui.action.keystroke.IKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
@@ -19,12 +21,8 @@ import org.eclipse.scout.rt.platform.util.CollectionUtility;
 import org.eclipse.scout.rt.platform.util.StringUtility;
 import org.eclipse.scout.rt.security.IAccessControlService;
 
-import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkThemeMenu;
-import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
-import ch.teachu.teachu_admin.client.search.SearchOutline;
-import ch.teachu.teachu_admin.client.settings.SettingsOutline;
-import ch.teachu.teachu_admin.client.work.WorkOutline;
-import ch.teachu.teachu_admin.shared.Icons;
+import java.beans.PropertyChangeEvent;
+import java.util.List;
 
 public class Desktop extends AbstractDesktop {
 
@@ -49,8 +47,8 @@ public class Desktop extends AbstractDesktop {
 
   @Override
   protected List<Class<? extends IOutline>> getConfiguredOutlines() {
-    return CollectionUtility.<Class<? extends IOutline>>arrayList(
-      WorkOutline.class, SearchOutline.class, SettingsOutline.class);
+    return CollectionUtility.arrayList(
+      AdminOutline.class, SearchOutline.class);
   }
 
   @Override
@@ -129,7 +127,7 @@ public class Desktop extends AbstractDesktop {
 
         @Override
         protected String getConfiguredText() {
-          return DEFAULT_THEME;
+          return TEXTS.get("DefaultTheme");
         }
 
         @Override
@@ -145,7 +143,7 @@ public class Desktop extends AbstractDesktop {
 
         @Override
         protected String getConfiguredText() {
-          return DARK_THEME;
+          return TEXTS.get("DarkTheme");
         }
 
         @Override
@@ -174,10 +172,10 @@ public class Desktop extends AbstractDesktop {
   public class WorkOutlineViewButton extends AbstractOutlineViewButton {
 
     public WorkOutlineViewButton() {
-      this(WorkOutline.class);
+      this(AdminOutline.class);
     }
 
-    protected WorkOutlineViewButton(Class<? extends WorkOutline> outlineClass) {
+    protected WorkOutlineViewButton(Class<? extends AdminOutline> outlineClass) {
       super(Desktop.this, outlineClass);
     }
 
@@ -206,28 +204,6 @@ public class Desktop extends AbstractDesktop {
     @Override
     protected String getConfiguredKeyStroke() {
       return IKeyStroke.F3;
-    }
-  }
-
-  @Order(3000)
-  public class SettingsOutlineViewButton extends AbstractOutlineViewButton {
-
-    public SettingsOutlineViewButton() {
-      this(SettingsOutline.class);
-    }
-
-    protected SettingsOutlineViewButton(Class<? extends SettingsOutline> outlineClass) {
-      super(Desktop.this, outlineClass);
-    }
-
-    @Override
-    protected DisplayStyle getConfiguredDisplayStyle() {
-      return DisplayStyle.TAB;
-    }
-
-    @Override
-    protected String getConfiguredKeyStroke() {
-      return IKeyStroke.F10;
     }
   }
 }

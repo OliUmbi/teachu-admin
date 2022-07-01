@@ -1,24 +1,17 @@
 package ch.teachu.teachu_admin.ui.html;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.eclipse.scout.rt.platform.BEANS;
-import org.eclipse.scout.rt.platform.security.ConfigFileCredentialVerifier;
 import org.eclipse.scout.rt.server.commons.authentication.DevelopmentAccessController;
 import org.eclipse.scout.rt.server.commons.authentication.FormBasedAccessController;
 import org.eclipse.scout.rt.server.commons.authentication.FormBasedAccessController.FormBasedAuthConfig;
 import org.eclipse.scout.rt.server.commons.authentication.ServletFilterHelper;
 import org.eclipse.scout.rt.server.commons.authentication.TrivialAccessController;
 import org.eclipse.scout.rt.server.commons.authentication.TrivialAccessController.TrivialAuthConfig;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * This is the main servlet filter for the HTML UI.
@@ -30,14 +23,14 @@ public class UiServletFilter implements Filter {
   private DevelopmentAccessController m_developmentAccessController;
 
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
+  public void init(FilterConfig filterConfig) {
     m_trivialAccessController = BEANS.get(TrivialAccessController.class)
-        .init(new TrivialAuthConfig()
-            .withExclusionFilter(filterConfig.getInitParameter("filter-exclude"))
-            .withLoginPageInstalled(true));
+      .init(new TrivialAuthConfig()
+        .withExclusionFilter(filterConfig.getInitParameter("filter-exclude"))
+        .withLoginPageInstalled(true));
     m_formBasedAccessController = BEANS.get(FormBasedAccessController.class)
-        .init(new FormBasedAuthConfig()
-            .withCredentialVerifier(BEANS.get(ConfigFileCredentialVerifier.class)));
+      .init(new FormBasedAuthConfig()
+        .withCredentialVerifier(BEANS.get(DatabaseCredentialVerifier.class)));
     m_developmentAccessController = BEANS.get(DevelopmentAccessController.class).init();
   }
 

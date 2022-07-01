@@ -15,9 +15,6 @@ public class ServerAccessControlService extends AccessControlService {
   protected IPermissionCollection execLoadPermissions(String userId) {
     IPermissionCollection permissions = BEANS.get(DefaultPermissionCollection.class);
     permissions.add(new RemoteServiceAccessPermission("*.shared.*", "*"), PermissionLevel.ALL);
-
-    //TODO Fill access control service - or replace this default implementation by simply return BEANS.get(AllPermissionCollection.class)
-
     permissions.setReadOnly();
     return permissions;
   }

@@ -1,21 +1,16 @@
 package ch.teachu.teachu_admin.server;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import ch.teachu.teachu_admin.server.user.UserDeactivation;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.server.commons.authentication.DevelopmentAccessController;
 import org.eclipse.scout.rt.server.commons.authentication.ServiceTunnelAccessTokenAccessController;
 import org.eclipse.scout.rt.server.commons.authentication.TrivialAccessController;
 import org.eclipse.scout.rt.server.commons.authentication.TrivialAccessController.TrivialAuthConfig;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * This is the main server side servlet filter.
@@ -27,10 +22,11 @@ public class ServerServletFilter implements Filter {
   private DevelopmentAccessController m_developmentAccessController;
 
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
+  public void init(FilterConfig filterConfig) {
     m_trivialAccessController = BEANS.get(TrivialAccessController.class).init(new TrivialAuthConfig().withExclusionFilter(filterConfig.getInitParameter("filter-exclude")));
     m_tunnelAccessController = BEANS.get(ServiceTunnelAccessTokenAccessController.class).init();
     m_developmentAccessController = BEANS.get(DevelopmentAccessController.class).init();
+    BEANS.get(UserDeactivation.class);
   }
 
   @Override
