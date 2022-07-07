@@ -1,5 +1,6 @@
 package ch.teachu.teachu_admin.server.user;
 
+import ch.teachu.teachu_admin.server.AccessHelper;
 import ch.teachu.teachu_admin.server.sql.UuidConverter;
 import ch.teachu.teachu_admin.shared.schoolconfig.ISchoolConfigService;
 import ch.teachu.teachu_admin.shared.user.IUserService;
@@ -21,6 +22,7 @@ public class UserService implements IUserService {
 
   @Override
   public UserTablePageData getUserTableData(SearchFilter filter) {
+    BEANS.get(AccessHelper.class).ensureAdmin();
     UserTablePageData pageData = new UserTablePageData();
     SQL.selectInto("SELECT id, first_name, last_name, email, active, role FROM user INTO :id, :firstName, :lastName, :email, :active, :role", pageData);
     Arrays.stream(pageData.getRows()).forEach(row -> row.setId(BEANS.get(UuidConverter.class).uuid((byte[]) row.getId())));
@@ -29,11 +31,13 @@ public class UserService implements IUserService {
 
   @Override
   public UserFormData prepareCreate(UserFormData formData) {
+    BEANS.get(AccessHelper.class).ensureAdmin();
     return formData;
   }
 
   @Override
   public UserFormData create(UserFormData formData) {
+    BEANS.get(AccessHelper.class).ensureAdmin();
     formData.getPassword().setValue(new BCryptPasswordEncoder().encode(formData.getPassword().getValue()));
     if (formData.getId() == null) {
       formData.setId(BEANS.get(UuidConverter.class).byteArray(UUID.randomUUID()));
@@ -51,6 +55,7 @@ public class UserService implements IUserService {
 
   @Override
   public UserFormData load(UserFormData formData) {
+    BEANS.get(AccessHelper.class).ensureAdmin();
     formData.setId(BEANS.get(UuidConverter.class).byteArray((UUID) formData.getId()));
     SQL.selectInto("SELECT email, role, first_name, last_name, birthday, sex, city, postal_code, street, phone," +
       "notes, termination_date, active FROM user WHERE id = :id INTO :email, :role, :firstName, :lastName, :birthday," +
@@ -60,6 +65,7 @@ public class UserService implements IUserService {
 
   @Override
   public UserFormData store(UserFormData formData) {
+    BEANS.get(AccessHelper.class).ensureAdmin();
     formData.setId(BEANS.get(UuidConverter.class).byteArray((UUID) formData.getId()));
 
     StringBuilder sql = new StringBuilder("UPDATE user SET email = :email, role=:role, first_name = :firstName," +
@@ -78,6 +84,7 @@ public class UserService implements IUserService {
 
   @Override
   public void delete(UUID id) {
+    BEANS.get(AccessHelper.class).ensureAdmin();
     byte[] byteId = BEANS.get(UuidConverter.class).byteArray(id);
     SQL.delete("DELETE FROM user WHERE id=:id", new NVPair("id", byteId));
   }

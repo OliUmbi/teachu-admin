@@ -2,8 +2,8 @@ package ch.teachu.teachu_admin.client;
 
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkThemeMenu;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
-import ch.teachu.teachu_admin.client.search.SearchOutline;
-import ch.teachu.teachu_admin.client.work.AdminOutline;
+import ch.teachu.teachu_admin.client.admin.AdminOutline;
+import ch.teachu.teachu_admin.client.teacher.TeacherOutline;
 import ch.teachu.teachu_admin.shared.Icons;
 import org.eclipse.scout.rt.client.session.ClientSessionProvider;
 import org.eclipse.scout.rt.client.ui.action.keystroke.IKeyStroke;
@@ -47,8 +47,7 @@ public class Desktop extends AbstractDesktop {
 
   @Override
   protected List<Class<? extends IOutline>> getConfiguredOutlines() {
-    return CollectionUtility.arrayList(
-      AdminOutline.class, SearchOutline.class);
+    return CollectionUtility.arrayList(AdminOutline.class, TeacherOutline.class);
   }
 
   @Override
@@ -169,13 +168,13 @@ public class Desktop extends AbstractDesktop {
   }
 
   @Order(1000)
-  public class WorkOutlineViewButton extends AbstractOutlineViewButton {
+  public class AdminOutlineViewButton extends AbstractOutlineViewButton {
 
-    public WorkOutlineViewButton() {
+    public AdminOutlineViewButton() {
       this(AdminOutline.class);
     }
 
-    protected WorkOutlineViewButton(Class<? extends AdminOutline> outlineClass) {
+    protected AdminOutlineViewButton(Class<? extends AdminOutline> outlineClass) {
       super(Desktop.this, outlineClass);
     }
 
@@ -186,24 +185,19 @@ public class Desktop extends AbstractDesktop {
   }
 
   @Order(2000)
-  public class SearchOutlineViewButton extends AbstractOutlineViewButton {
+  public class TeacherOutlineViewButton extends AbstractOutlineViewButton {
 
-    public SearchOutlineViewButton() {
-      this(SearchOutline.class);
+    public TeacherOutlineViewButton() {
+      this(TeacherOutline.class);
     }
 
-    protected SearchOutlineViewButton(Class<? extends SearchOutline> outlineClass) {
+    protected TeacherOutlineViewButton(Class<? extends TeacherOutline> outlineClass) {
       super(Desktop.this, outlineClass);
     }
 
     @Override
-    protected DisplayStyle getConfiguredDisplayStyle() {
-      return DisplayStyle.TAB;
-    }
-
-    @Override
     protected String getConfiguredKeyStroke() {
-      return IKeyStroke.F3;
+      return IKeyStroke.F4;
     }
   }
 }
