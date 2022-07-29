@@ -53,20 +53,20 @@ public class UserTablePageData extends AbstractTablePageData {
     public static final String firstName = "firstName";
     public static final String lastName = "lastName";
     public static final String email = "email";
-    public static final String active = "active";
     public static final String role = "role";
-    private Object m_id;
+    public static final String active = "active";
+    private String m_id;
     private String m_firstName;
     private String m_lastName;
     private String m_email;
-    private Boolean m_active;
     private String m_role;
+    private Boolean m_active;
 
-    public Object getId() {
+    public String getId() {
       return m_id;
     }
 
-    public void setId(Object newId) {
+    public void setId(String newId) {
       m_id = newId;
     }
 
@@ -94,20 +94,20 @@ public class UserTablePageData extends AbstractTablePageData {
       m_email = newEmail;
     }
 
-    public Boolean getActive() {
-      return m_active;
-    }
-
-    public void setActive(Boolean newActive) {
-      m_active = newActive;
-    }
-
     public String getRole() {
       return m_role;
     }
 
     public void setRole(String newRole) {
       m_role = newRole;
+    }
+
+    public Boolean getActive() {
+      return m_active;
+    }
+
+    public void setActive(Boolean newActive) {
+      m_active = newActive;
     }
   }
 }

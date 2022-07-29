@@ -4,17 +4,17 @@ import ch.teachu.teachu_admin.client.user.UserForm.MainBox.CancelButton;
 import ch.teachu.teachu_admin.client.user.UserForm.MainBox.GeneralBox;
 import ch.teachu.teachu_admin.client.user.UserForm.MainBox.OkButton;
 import ch.teachu.teachu_admin.shared.schoolconfig.ISchoolConfigService;
-import ch.teachu.teachu_admin.shared.user.IUserService;
-import ch.teachu.teachu_admin.shared.user.RoleCodeType;
-import ch.teachu.teachu_admin.shared.user.SexCodeType;
-import ch.teachu.teachu_admin.shared.user.UserFormData;
+import ch.teachu.teachu_admin.shared.user.*;
 import org.eclipse.scout.rt.client.dto.FormData;
 import org.eclipse.scout.rt.client.services.common.clipboard.IClipboardService;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.action.menu.IMenuType;
 import org.eclipse.scout.rt.client.ui.action.menu.ValueFieldMenuType;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
+import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.IValueField;
 import org.eclipse.scout.rt.client.ui.form.fields.booleanfield.AbstractBooleanField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
@@ -24,6 +24,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.longfield.AbstractLongField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
+import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.exception.VetoException;
@@ -32,6 +33,7 @@ import org.eclipse.scout.rt.platform.util.CollectionUtility;
 import org.eclipse.scout.rt.platform.util.ObjectUtility;
 import org.eclipse.scout.rt.platform.util.StringUtility;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
@@ -44,7 +46,8 @@ import java.util.regex.Pattern;
 @FormData(value = UserFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class UserForm extends AbstractForm {
 
-  private Object id;
+  private String id;
+  private String role;
   private final String emailDomain = BEANS.get(ISchoolConfigService.class).getConfig("EmailDomain");
 
   @Override
@@ -74,6 +77,14 @@ public class UserForm extends AbstractForm {
 
   public CancelButton getCancelButton() {
     return getFieldByClass(CancelButton.class);
+  }
+
+  public MainBox.DetailsBox.ParentChildBox getParentChildBox() {
+    return getFieldByClass(MainBox.DetailsBox.ParentChildBox.class);
+  }
+
+  public MainBox.DetailsBox.ParentChildBox.ParentChildField getParentChildField() {
+    return getFieldByClass(MainBox.DetailsBox.ParentChildBox.ParentChildField.class);
   }
 
   public MainBox.DetailsBox.ContactBox.CityField getCityField() {
@@ -137,12 +148,12 @@ public class UserForm extends AbstractForm {
   }
 
   @FormData
-  public Object getId() {
+  public String getId() {
     return id;
   }
 
   @FormData
-  public void setId(Object id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -367,6 +378,12 @@ public class UserForm extends AbstractForm {
         protected boolean getConfiguredMandatory() {
           return true;
         }
+
+        @Override
+        protected void execChangedValue() {
+          super.execChangedValue();
+          role = getValue();
+        }
       }
 
       @Order(4000)
@@ -454,6 +471,65 @@ public class UserForm extends AbstractForm {
         }
       }
 
+      @Order(1750)
+      public class ParentChildBox extends AbstractGroupBox {
+
+        @Override
+        protected void execInitField() {
+          super.execInitField();
+          getRoleField().addPropertyChangeListener(e -> {
+            if (IValueField.PROP_VALUE.equals(e.getPropertyName())) {
+              setVisible(ObjectUtility.isOneOf(role, RoleCodeType.StudentCode.ID, RoleCodeType.ParentCode.ID));
+              setLabel(RoleCodeType.ParentCode.ID.equals(role) ? TEXTS.get("Children") : TEXTS.get("Parents"));
+              getParentChildField().getTable().deleteAllRows();
+            }
+          });
+        }
+
+        @Order(1000)
+        public class ParentChildField extends AbstractTableField<ParentChildField.ParentChildTable> {
+          @Override
+          protected boolean getConfiguredLabelVisible() {
+            return false;
+          }
+
+          @Override
+          protected boolean getConfiguredGridUseUiHeight() {
+            return true;
+          }
+
+          public class ParentChildTable extends AbstractCrudTable {
+            @Order(1000)
+            public class NameColumn extends AbstractSmartColumn<String> {
+              @Override
+              protected String getConfiguredHeaderText() {
+                return TEXTS.get("Name");
+              }
+
+              @Override
+              protected int getConfiguredWidth() {
+                return 500;
+              }
+
+              @Override
+              protected boolean getConfiguredEditable() {
+                return true;
+              }
+
+              @Override
+              protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
+                return UserLookupCall.class;
+              }
+
+              @Override
+              protected void execPrepareLookup(ILookupCall call, ITableRow row) {
+                ((UserLookupCall) call).setRole(RoleCodeType.StudentCode.ID.equals(role) ? RoleCodeType.ParentCode.ID : RoleCodeType.StudentCode.ID);
+              }
+            }
+          }
+        }
+      }
+
       @Order(2000)
       public class NotesBox extends AbstractGroupBox {
         @Override
@@ -476,7 +552,7 @@ public class UserForm extends AbstractForm {
 
           @Override
           protected int getConfiguredMaxLength() {
-            return 1000;
+            return 4096;
           }
 
           @Override
@@ -548,6 +624,7 @@ public class UserForm extends AbstractForm {
       exportFormData(formData);
       formData.setId(id);
       formData = BEANS.get(IUserService.class).load(formData);
+      role = formData.getRole().getValue();
       importFormData(formData);
       getActiveField().setValue(formData.getActive().getValue() == null || formData.getActive().getValue());
       setSubTitle(formData.getFirstName().getValue() + " " + formData.getLastName().getValue());

@@ -24,7 +24,6 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Data(UserTablePageData.class)
 public class UserTablePage extends AbstractPageWithTable<Table> {
@@ -75,7 +74,7 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(0)
-    public class IdColumn extends AbstractColumn<Object> {
+    public class IdColumn extends AbstractColumn<String> {
       @Override
       protected boolean getConfiguredDisplayable() {
         return false;
@@ -91,7 +90,7 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
 
       @Override
       protected int getConfiguredWidth() {
-        return 100;
+        return 200;
       }
     }
 
@@ -104,7 +103,7 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
 
       @Override
       protected int getConfiguredWidth() {
-        return 100;
+        return 200;
       }
     }
 
@@ -117,24 +116,11 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
 
       @Override
       protected int getConfiguredWidth() {
-        return 100;
+        return 300;
       }
     }
 
     @Order(1875)
-    public class ActiveColumn extends AbstractBooleanColumn {
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Active");
-      }
-
-      @Override
-      protected int getConfiguredWidth() {
-        return 100;
-      }
-    }
-
-    @Order(2000)
     public class RoleColumn extends AbstractStringColumn {
       @Override
       protected String getConfiguredHeaderText() {
@@ -143,13 +129,26 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
 
       @Override
       protected int getConfiguredWidth() {
-        return 100;
+        return 80;
       }
 
       @Override
       protected String execParseValue(ITableRow row, Object rawValue) {
         String val = (String) rawValue;
         return TEXTS.get(val.substring(0, 1).toUpperCase() + val.substring(1));
+      }
+    }
+
+    @Order(2000)
+    public class ActiveColumn extends AbstractBooleanColumn {
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("Active");
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 75;
       }
     }
 
@@ -212,7 +211,7 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
       protected void execAction() {
         String name = getFirstNameColumn().getValue(getSelectedRow()) + ' ' + getLastNameColumn().getValue(getSelectedRow());
         if (MessageBoxes.createDeleteConfirmationMessage(List.of(name)).show() == IMessageBox.YES_OPTION) {
-          BEANS.get(IUserService.class).delete((UUID) getIdColumn().getValue(getSelectedRow()));
+          BEANS.get(IUserService.class).delete(getIdColumn().getValue(getSelectedRow()));
           getSelectedRow().delete();
         }
       }

@@ -1,7 +1,9 @@
 package ch.teachu.teachu_admin.shared.user;
 
+import org.eclipse.scout.rt.shared.data.basic.table.AbstractTableRowData;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
+import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldBeanData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import javax.annotation.Generated;
@@ -38,14 +40,14 @@ public class UserFormData extends AbstractFormData {
   /**
    * access method for property Id.
    */
-  public Object getId() {
+  public String getId() {
     return getIdProperty().getValue();
   }
 
   /**
    * access method for property Id.
    */
-  public void setId(Object id) {
+  public void setId(String id) {
     getIdProperty().setValue(id);
   }
 
@@ -59,6 +61,10 @@ public class UserFormData extends AbstractFormData {
 
   public Notes getNotes() {
     return getFieldByClass(Notes.class);
+  }
+
+  public ParentChild getParentChild() {
+    return getFieldByClass(ParentChild.class);
   }
 
   public Password getPassword() {
@@ -109,7 +115,7 @@ public class UserFormData extends AbstractFormData {
     private static final long serialVersionUID = 1L;
   }
 
-  public static class IdProperty extends AbstractPropertyData<Object> {
+  public static class IdProperty extends AbstractPropertyData<String> {
     private static final long serialVersionUID = 1L;
   }
 
@@ -119,6 +125,58 @@ public class UserFormData extends AbstractFormData {
 
   public static class Notes extends AbstractValueFieldData<String> {
     private static final long serialVersionUID = 1L;
+  }
+
+  public static class ParentChild extends AbstractTableFieldBeanData {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public ParentChildRowData addRow() {
+      return (ParentChildRowData) super.addRow();
+    }
+
+    @Override
+    public ParentChildRowData addRow(int rowState) {
+      return (ParentChildRowData) super.addRow(rowState);
+    }
+
+    @Override
+    public ParentChildRowData createRow() {
+      return new ParentChildRowData();
+    }
+
+    @Override
+    public Class<? extends AbstractTableRowData> getRowType() {
+      return ParentChildRowData.class;
+    }
+
+    @Override
+    public ParentChildRowData[] getRows() {
+      return (ParentChildRowData[]) super.getRows();
+    }
+
+    @Override
+    public ParentChildRowData rowAt(int index) {
+      return (ParentChildRowData) super.rowAt(index);
+    }
+
+    public void setRows(ParentChildRowData[] rows) {
+      super.setRows(rows);
+    }
+
+    public static class ParentChildRowData extends AbstractTableRowData {
+      private static final long serialVersionUID = 1L;
+      public static final String name = "name";
+      private String m_name;
+
+      public String getName() {
+        return m_name;
+      }
+
+      public void setName(String newName) {
+        m_name = newName;
+      }
+    }
   }
 
   public static class Password extends AbstractValueFieldData<String> {

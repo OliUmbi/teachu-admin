@@ -4,8 +4,6 @@ import org.eclipse.scout.rt.platform.service.IService;
 import org.eclipse.scout.rt.shared.TunnelToServer;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
-import java.util.UUID;
-
 @TunnelToServer
 public interface IUserService extends IService {
   UserTablePageData getUserTableData(SearchFilter filter);
@@ -18,5 +16,5 @@ public interface IUserService extends IService {
 
   UserFormData store(UserFormData formData);
 
-  void delete(UUID id);
+  void delete(String id);
 }
