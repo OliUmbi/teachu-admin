@@ -3,8 +3,11 @@ package ch.teachu.teachu_admin.client;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkThemeMenu;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
 import ch.teachu.teachu_admin.client.admin.AdminOutline;
+import ch.teachu.teachu_admin.client.event.school.SchoolEventForm;
 import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoForm;
 import ch.teachu.teachu_admin.client.teacher.TeacherOutline;
+import ch.teachu.teachu_admin.client.user.UserForm;
+import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.Icons;
 import org.eclipse.scout.rt.client.session.ClientSessionProvider;
 import org.eclipse.scout.rt.client.ui.action.keystroke.IKeyStroke;
@@ -20,6 +23,7 @@ import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
 import org.eclipse.scout.rt.platform.util.CollectionUtility;
 import org.eclipse.scout.rt.platform.util.StringUtility;
+import org.eclipse.scout.rt.security.ACCESS;
 import org.eclipse.scout.rt.security.IAccessControlService;
 
 import java.beans.PropertyChangeEvent;
@@ -95,6 +99,19 @@ public class Desktop extends AbstractDesktop {
       return Icons.Plus;
     }
 
+    @Order(0)
+    public class UserMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("User");
+      }
+
+      @Override
+      protected void execAction() {
+        new UserForm().startNew();
+      }
+    }
+
     @Order(1000)
     public class SchoolInfoMenu extends AbstractMenu {
       @Override
@@ -105,6 +122,28 @@ public class Desktop extends AbstractDesktop {
       @Override
       protected void execAction() {
         new SchoolInfoForm().startNew();
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
+    }
+
+    @Order(2000)
+    public class SchoolEventMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("Event");
+      }
+
+      @Override
+      protected void execAction() {
+        new SchoolEventForm().startNew();
+      }
+
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
       }
     }
   }

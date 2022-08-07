@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.client.admin;
 
-import ch.teachu.teachu_admin.client.schoolclass.SchoolClassTablePage;
+import ch.teachu.teachu_admin.client.event.school.SchoolEventTablePage;
 import ch.teachu.teachu_admin.client.schoolconfig.SchoolConfigTablePage;
 import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoTablePage;
 import ch.teachu.teachu_admin.client.user.UserTablePage;
@@ -23,6 +23,7 @@ public class AdminOutline extends AbstractOutline {
     pageList.add(new UserTablePage());
     pageList.add(new SchoolConfigTablePage());
     pageList.add(new SchoolInfoTablePage());
+    pageList.add(new SchoolEventTablePage());
   }
 
   @Override

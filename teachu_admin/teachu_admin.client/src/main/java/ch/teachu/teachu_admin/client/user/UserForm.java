@@ -486,6 +486,11 @@ public class UserForm extends AbstractForm {
           });
         }
 
+        @Override
+        protected boolean getConfiguredVisible() {
+          return false;
+        }
+
         @Order(1000)
         public class ParentChildField extends AbstractTableField<ParentChildField.ParentChildTable> {
           @Override
