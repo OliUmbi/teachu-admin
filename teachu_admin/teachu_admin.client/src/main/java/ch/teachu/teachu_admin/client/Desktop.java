@@ -3,6 +3,7 @@ package ch.teachu.teachu_admin.client;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkThemeMenu;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
 import ch.teachu.teachu_admin.client.admin.AdminOutline;
+import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoForm;
 import ch.teachu.teachu_admin.client.teacher.TeacherOutline;
 import ch.teachu.teachu_admin.shared.Icons;
 import org.eclipse.scout.rt.client.session.ClientSessionProvider;
@@ -74,6 +75,37 @@ public class Desktop extends AbstractDesktop {
     } else {
       darkMenu.setIconId(null);
       defaultMenu.setIconId(Icons.CheckedBold);
+    }
+  }
+
+  @Order(500)
+  public class CreateMenu extends AbstractMenu {
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Create");
+    }
+
+    @Override
+    protected String getConfiguredKeyStroke() {
+      return IKeyStroke.F8;
+    }
+
+    @Override
+    protected String getConfiguredIconId() {
+      return Icons.Plus;
+    }
+
+    @Order(1000)
+    public class SchoolInfoMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("SchoolInfo");
+      }
+
+      @Override
+      protected void execAction() {
+        new SchoolInfoForm().startNew();
+      }
     }
   }
 

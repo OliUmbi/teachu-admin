@@ -1,13 +1,13 @@
 package ch.teachu.teachu_admin.client.user;
 
+import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
 import ch.teachu.teachu_admin.client.user.UserTablePage.Table;
 import ch.teachu.teachu_admin.shared.user.IUserService;
 import ch.teachu.teachu_admin.shared.user.UserTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
-import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.action.menu.IMenu;
-import org.eclipse.scout.rt.client.ui.action.menu.IMenuType;
-import org.eclipse.scout.rt.client.ui.action.menu.TableMenuType;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractBooleanColumn;
@@ -19,11 +19,11 @@ import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
-import org.eclipse.scout.rt.platform.util.CollectionUtility;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data(UserTablePageData.class)
 public class UserTablePage extends AbstractPageWithTable<Table> {
@@ -153,16 +153,7 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(1000)
-    public class CreateMenu extends AbstractMenu {
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("New");
-      }
-
-      @Override
-      protected Set<? extends IMenuType> getConfiguredMenuTypes() {
-        return CollectionUtility.hashSet(TableMenuType.EmptySpace);
-      }
+    public class CreateMenu extends AbstractCreateMenu {
 
       @Override
       protected void execAction() {
@@ -174,17 +165,7 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(2000)
-    public class EditMenu extends AbstractMenu {
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("Edit");
-      }
-
-      @Override
-      protected Set<? extends IMenuType> getConfiguredMenuTypes() {
-        return CollectionUtility.hashSet(TableMenuType.SingleSelection);
-      }
-
+    public class EditMenu extends AbstractEditMenu {
       @Override
       protected void execAction() {
         UserForm userForm = new UserForm();
@@ -196,24 +177,21 @@ public class UserTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(3000)
-    public class DeleteMenu extends AbstractMenu {
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("DeleteMenu");
-      }
-
-      @Override
-      protected Set<? extends IMenuType> getConfiguredMenuTypes() {
-        return CollectionUtility.hashSet(TableMenuType.SingleSelection, TableMenuType.MultiSelection);
-      }
+    public class DeleteMenu extends AbstractDeleteMenu {
 
       @Override
       protected void execAction() {
-        String name = getFirstNameColumn().getValue(getSelectedRow()) + ' ' + getLastNameColumn().getValue(getSelectedRow());
-        if (MessageBoxes.createDeleteConfirmationMessage(List.of(name)).show() == IMessageBox.YES_OPTION) {
-          BEANS.get(IUserService.class).delete(getIdColumn().getValue(getSelectedRow()));
-          getSelectedRow().delete();
+        List<String> names = getNames();
+        if (MessageBoxes.createDeleteConfirmationMessage(names).show() == IMessageBox.YES_OPTION) {
+          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(IUserService.class)::delete);
+          getSelectedRows().forEach(ITableRow::delete);
         }
+      }
+
+      private List<String> getNames() {
+        return getSelectedRows().stream()
+          .map(row -> getFirstNameColumn().getValue(row) + ' ' + getLastNameColumn().getValue(row))
+          .collect(Collectors.toList());
       }
     }
   }
