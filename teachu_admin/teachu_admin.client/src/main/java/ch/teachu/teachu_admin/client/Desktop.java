@@ -5,6 +5,8 @@ import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultTh
 import ch.teachu.teachu_admin.client.admin.AdminOutline;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm;
 import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoForm;
+import ch.teachu.teachu_admin.client.semester.SemesterForm;
+import ch.teachu.teachu_admin.client.subject.SubjectForm;
 import ch.teachu.teachu_admin.client.teacher.TeacherOutline;
 import ch.teachu.teachu_admin.client.user.UserForm;
 import ch.teachu.teachu_admin.shared.AdminPermission;
@@ -144,6 +146,32 @@ public class Desktop extends AbstractDesktop {
 
       protected boolean getConfiguredVisible() {
         return ACCESS.check(new AdminPermission());
+      }
+    }
+
+    @Order(3000)
+    public class SubjectMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("ClassSubject");
+      }
+
+      @Override
+      protected void execAction() {
+        new SubjectForm().startNew();
+      }
+    }
+
+    @Order(4000)
+    public class SemesterMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("Semester");
+      }
+
+      @Override
+      protected void execAction() {
+        new SemesterForm().startNew();
       }
     }
   }

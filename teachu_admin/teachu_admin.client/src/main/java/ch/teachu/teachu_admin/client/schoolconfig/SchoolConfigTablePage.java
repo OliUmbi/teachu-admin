@@ -72,7 +72,7 @@ public class SchoolConfigTablePage extends AbstractPageWithTable<Table> {
     public class ConfigNameColumn extends AbstractStringColumn {
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("ConfigName");
+        return TEXTS.get("Name");
       }
 
       @Override

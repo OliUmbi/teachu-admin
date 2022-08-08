@@ -1,13 +1,13 @@
 package ch.teachu.teachu_admin.shared.event.school;
 
-import ch.teachu.teachu_admin.shared.event.EventTablePageData;
+import ch.teachu.teachu_admin.shared.event.SchoolEventTablePageData;
 import org.eclipse.scout.rt.platform.service.IService;
 import org.eclipse.scout.rt.shared.TunnelToServer;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
 @TunnelToServer
 public interface ISchoolEventService extends IService {
-  EventTablePageData getEventTableData(SearchFilter filter);
+  SchoolEventTablePageData getEventTableData(SearchFilter filter);
 
   SchoolEventFormData prepareCreate(SchoolEventFormData formData);
 

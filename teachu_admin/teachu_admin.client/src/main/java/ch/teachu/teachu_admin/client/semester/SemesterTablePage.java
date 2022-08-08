@@ -1,11 +1,11 @@
-package ch.teachu.teachu_admin.client.schoolinfo;
+package ch.teachu.teachu_admin.client.semester;
 
-import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoTablePage.Table;
+import ch.teachu.teachu_admin.client.semester.SemesterTablePage.Table;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
-import ch.teachu.teachu_admin.shared.schoolinfo.ISchoolInfoService;
-import ch.teachu.teachu_admin.shared.schoolinfo.SchoolInfoTablePageData;
+import ch.teachu.teachu_admin.shared.semester.ISemesterService;
+import ch.teachu.teachu_admin.shared.semester.SemesterTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
 import org.eclipse.scout.rt.client.ui.action.menu.IMenu;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
@@ -22,8 +22,8 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
 import java.util.List;
 
-@Data(SchoolInfoTablePageData.class)
-public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
+@Data(SemesterTablePageData.class)
+public class SemesterTablePage extends AbstractPageWithTable<Table> {
   @Override
   protected boolean getConfiguredLeaf() {
     return true;
@@ -31,26 +31,30 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
 
   @Override
   protected void execLoadData(SearchFilter filter) {
-    importPageData(BEANS.get(ISchoolInfoService.class).getSchoolInfoTableData(filter));
+    importPageData(BEANS.get(ISemesterService.class).getSemesterTableData(filter));
   }
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("SchoolInfo");
+    return TEXTS.get("Semesters");
   }
 
   public class Table extends AbstractTable {
 
-    public CreatorColumn getCreatorColumn() {
-      return getColumnSet().getColumnByClass(CreatorColumn.class);
+    public FromColumn getFromColumn() {
+      return getColumnSet().getColumnByClass(FromColumn.class);
     }
 
     public IdColumn getIdColumn() {
       return getColumnSet().getColumnByClass(IdColumn.class);
     }
 
-    public TitleColumn getTitleColumn() {
-      return getColumnSet().getColumnByClass(TitleColumn.class);
+    public NameColumn getNameColumn() {
+      return getColumnSet().getColumnByClass(NameColumn.class);
+    }
+
+    public ToColumn getToColumn() {
+      return getColumnSet().getColumnByClass(ToColumn.class);
     }
 
     @Override
@@ -67,10 +71,10 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(1000)
-    public class TitleColumn extends AbstractStringColumn {
+    public class NameColumn extends AbstractStringColumn {
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("Title");
+        return TEXTS.get("Name");
       }
 
       @Override
@@ -80,10 +84,10 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(2000)
-    public class DateColumn extends AbstractDateColumn {
+    public class FromColumn extends AbstractDateColumn {
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("Date");
+        return TEXTS.get("FromDate");
       }
 
       @Override
@@ -93,15 +97,15 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
     }
 
     @Order(3000)
-    public class CreatorColumn extends AbstractStringColumn {
+    public class ToColumn extends AbstractDateColumn {
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("Creator");
+        return TEXTS.get("ToDate");
       }
 
       @Override
       protected int getConfiguredWidth() {
-        return 300;
+        return 100;
       }
     }
 
@@ -110,9 +114,9 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
 
       @Override
       protected void execAction() {
-        SchoolInfoForm schoolInfoForm = new SchoolInfoForm();
-        schoolInfoForm.startNew();
-        schoolInfoForm.waitFor();
+        SemesterForm semesterForm = new SemesterForm();
+        semesterForm.startNew();
+        semesterForm.waitFor();
         reloadPage();
       }
     }
@@ -121,10 +125,10 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
     public class EditMenu extends AbstractEditMenu {
       @Override
       protected void execAction() {
-        SchoolInfoForm schoolInfoForm = new SchoolInfoForm();
-        schoolInfoForm.setId(getIdColumn().getValue(getSelectedRow()));
-        schoolInfoForm.startModify();
-        schoolInfoForm.waitFor();
+        SemesterForm semesterForm = new SemesterForm();
+        semesterForm.setId(getIdColumn().getValue(getSelectedRow()));
+        semesterForm.startModify();
+        semesterForm.waitFor();
         reloadPage();
       }
     }
@@ -134,9 +138,9 @@ public class SchoolInfoTablePage extends AbstractPageWithTable<Table> {
 
       @Override
       protected void execAction() {
-        List<String> titles = getTitleColumn().getValues(getSelectedRows());
+        List<String> titles = getNameColumn().getValues(getSelectedRows());
         if (MessageBoxes.createDeleteConfirmationMessage(titles).show() == IMessageBox.YES_OPTION) {
-          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(ISchoolInfoService.class)::delete);
+          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(ISemesterService.class)::delete);
           getSelectedRows().forEach(ITableRow::delete);
         }
       }

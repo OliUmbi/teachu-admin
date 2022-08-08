@@ -4,6 +4,7 @@ import org.eclipse.scout.rt.shared.data.basic.table.AbstractTableRowData;
 import org.eclipse.scout.rt.shared.data.page.AbstractTablePageData;
 
 import javax.annotation.Generated;
+import java.math.BigDecimal;
 
 /**
  * <b>NOTE:</b><br>
@@ -49,5 +50,35 @@ public class SubjectTablePageData extends AbstractTablePageData {
 
   public static class SubjectTableRowData extends AbstractTableRowData {
     private static final long serialVersionUID = 1L;
+    public static final String id = "id";
+    public static final String subject = "subject";
+    public static final String weight = "weight";
+    private String m_id;
+    private String m_subject;
+    private BigDecimal m_weight;
+
+    public String getId() {
+      return m_id;
+    }
+
+    public void setId(String newId) {
+      m_id = newId;
+    }
+
+    public String getSubject() {
+      return m_subject;
+    }
+
+    public void setSubject(String newSubject) {
+      m_subject = newSubject;
+    }
+
+    public BigDecimal getWeight() {
+      return m_weight;
+    }
+
+    public void setWeight(BigDecimal newWeight) {
+      m_weight = newWeight;
+    }
   }
 }

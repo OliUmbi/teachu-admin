@@ -1,7 +1,7 @@
-package ch.teachu.teachu_admin.client.event.school;
+package ch.teachu.teachu_admin.client.semester;
 
-import ch.teachu.teachu_admin.shared.event.school.ISchoolEventService;
-import ch.teachu.teachu_admin.shared.event.school.SchoolEventFormData;
+import ch.teachu.teachu_admin.shared.semester.ISemesterService;
+import ch.teachu.teachu_admin.shared.semester.SemesterFormData;
 import org.eclipse.scout.rt.client.testenvironment.TestEnvironmentClientSession;
 import org.eclipse.scout.rt.testing.client.runner.ClientTestRunner;
 import org.eclipse.scout.rt.testing.client.runner.RunWithClientSession;
@@ -15,14 +15,14 @@ import org.mockito.Mockito;
 @RunWithSubject("anonymous")
 @RunWith(ClientTestRunner.class)
 @RunWithClientSession(TestEnvironmentClientSession.class)
-public class SchoolEventFormTest {
+public class SemesterFormTest {
   @BeanMock
-  private ISchoolEventService m_mockSvc;
+  private ISemesterService m_mockSvc;
 // TODO [rbr] add test cases
 
   @Before
   public void setup() {
-    SchoolEventFormData answer = new SchoolEventFormData();
+    SemesterFormData answer = new SemesterFormData();
     Mockito.when(m_mockSvc.prepareCreate(ArgumentMatchers.any())).thenReturn(answer);
     Mockito.when(m_mockSvc.create(ArgumentMatchers.any())).thenReturn(answer);
     Mockito.when(m_mockSvc.load(ArgumentMatchers.any())).thenReturn(answer);

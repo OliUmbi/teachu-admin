@@ -85,7 +85,7 @@ public class SchoolConfigForm extends AbstractForm {
       public class ConfigNameField extends AbstractStringField {
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("ConfigName");
+          return TEXTS.get("Name");
         }
 
         @Override

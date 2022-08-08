@@ -1,7 +1,7 @@
 package ch.teachu.teachu_admin.server.event.school;
 
 import ch.teachu.teachu_admin.server.AccessHelper;
-import ch.teachu.teachu_admin.shared.event.EventTablePageData;
+import ch.teachu.teachu_admin.shared.event.SchoolEventTablePageData;
 import ch.teachu.teachu_admin.shared.event.school.ISchoolEventService;
 import ch.teachu.teachu_admin.shared.event.school.SchoolEventFormData;
 import org.eclipse.scout.rt.platform.BEANS;
@@ -13,9 +13,9 @@ import java.util.UUID;
 
 public class SchoolEventService implements ISchoolEventService {
   @Override
-  public EventTablePageData getEventTableData(SearchFilter filter) {
+  public SchoolEventTablePageData getEventTableData(SearchFilter filter) {
     BEANS.get(AccessHelper.class).ensureAdmin();
-    EventTablePageData pageData = new EventTablePageData();
+    SchoolEventTablePageData pageData = new SchoolEventTablePageData();
     SQL.selectInto("SELECT BIN_TO_UUID(id), date_from, date_to, title, school_event_type " +
       "FROM school_event " +
       "INTO :id, :from, :to, :title, :type", pageData);
