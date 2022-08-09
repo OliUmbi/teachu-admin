@@ -4,6 +4,7 @@ import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkTheme
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
 import ch.teachu.teachu_admin.client.admin.AdminOutline;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm;
+import ch.teachu.teachu_admin.client.room.RoomForm;
 import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoForm;
 import ch.teachu.teachu_admin.client.semester.SemesterForm;
 import ch.teachu.teachu_admin.client.subject.SubjectForm;
@@ -172,6 +173,19 @@ public class Desktop extends AbstractDesktop {
       @Override
       protected void execAction() {
         new SemesterForm().startNew();
+      }
+    }
+
+    @Order(5000)
+    public class RoomMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("Room");
+      }
+
+      @Override
+      protected void execAction() {
+        new RoomForm().startNew();
       }
     }
   }
