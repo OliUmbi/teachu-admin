@@ -1,10 +1,8 @@
 package ch.teachu.teachu_admin.client.user;
 
-import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
+import ch.teachu.teachu_admin.client.shared.*;
 import ch.teachu.teachu_admin.client.user.UserTablePage.Table;
+import ch.teachu.teachu_admin.shared.user.IUserCheckDeletable;
 import ch.teachu.teachu_admin.shared.user.IUserService;
 import ch.teachu.teachu_admin.shared.user.UserTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
@@ -180,10 +178,13 @@ public class UserTablePage extends AbstractTablePage<Table> {
 
       @Override
       protected void execAction() {
-        List<String> names = getNames();
-        if (MessageBoxes.createDeleteConfirmationMessage(names).show() == IMessageBox.YES_OPTION) {
-          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(IUserService.class)::delete);
-          getSelectedRows().forEach(ITableRow::delete);
+        List<String> ids = getIdColumn().getValues(getSelectedRows());
+        if (BEANS.get(DeletableMessageBoxHelper.class).checkAndShowMessageBox(IUserCheckDeletable.class, ids)) {
+          List<String> names = getNames();
+          if (MessageBoxes.createDeleteConfirmationMessage(names).show() == IMessageBox.YES_OPTION) {
+            ids.forEach(BEANS.get(IUserService.class)::delete);
+            getSelectedRows().forEach(ITableRow::delete);
+          }
         }
       }
 

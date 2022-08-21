@@ -1,10 +1,8 @@
 package ch.teachu.teachu_admin.client.room;
 
 import ch.teachu.teachu_admin.client.room.RoomTablePage.Table;
-import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
+import ch.teachu.teachu_admin.client.shared.*;
+import ch.teachu.teachu_admin.shared.room.IRoomCheckDeletable;
 import ch.teachu.teachu_admin.shared.room.IRoomService;
 import ch.teachu.teachu_admin.shared.room.RoomTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
@@ -102,10 +100,13 @@ public class RoomTablePage extends AbstractTablePage<Table> {
 
       @Override
       protected void execAction() {
-        List<String> titles = getNameColumn().getValues(getSelectedRows());
-        if (MessageBoxes.createDeleteConfirmationMessage(titles).show() == IMessageBox.YES_OPTION) {
-          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(IRoomService.class)::delete);
-          getSelectedRows().forEach(ITableRow::delete);
+        List<String> ids = getIdColumn().getValues(getSelectedRows());
+        if (BEANS.get(DeletableMessageBoxHelper.class).checkAndShowMessageBox(IRoomCheckDeletable.class, ids)) {
+          List<String> titles = getNameColumn().getValues(getSelectedRows());
+          if (MessageBoxes.createDeleteConfirmationMessage(titles).show() == IMessageBox.YES_OPTION) {
+            ids.forEach(BEANS.get(IRoomService.class)::delete);
+            getSelectedRows().forEach(ITableRow::delete);
+          }
         }
       }
     }

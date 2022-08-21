@@ -1,10 +1,8 @@
 package ch.teachu.teachu_admin.client.subject;
 
-import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
-import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
+import ch.teachu.teachu_admin.client.shared.*;
 import ch.teachu.teachu_admin.client.subject.SubjectTablePage.Table;
+import ch.teachu.teachu_admin.shared.subject.ISubjectCheckDeletable;
 import ch.teachu.teachu_admin.shared.subject.ISubjectService;
 import ch.teachu.teachu_admin.shared.subject.SubjectTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
@@ -121,10 +119,13 @@ public class SubjectTablePage extends AbstractTablePage<Table> {
 
       @Override
       protected void execAction() {
-        List<String> titles = getSubjectColumn().getValues(getSelectedRows());
-        if (MessageBoxes.createDeleteConfirmationMessage(titles).show() == IMessageBox.YES_OPTION) {
-          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(ISubjectService.class)::delete);
-          getSelectedRows().forEach(ITableRow::delete);
+        List<String> ids = getIdColumn().getValues(getSelectedRows());
+        if (BEANS.get(DeletableMessageBoxHelper.class).checkAndShowMessageBox(ISubjectCheckDeletable.class, ids)) {
+          List<String> titles = getSubjectColumn().getValues(getSelectedRows());
+          if (MessageBoxes.createDeleteConfirmationMessage(titles).show() == IMessageBox.YES_OPTION) {
+            ids.forEach(BEANS.get(ISubjectService.class)::delete);
+            getSelectedRows().forEach(ITableRow::delete);
+          }
         }
       }
     }

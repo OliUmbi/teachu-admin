@@ -134,5 +134,6 @@ public class UserService implements IUserService {
     NVPair idPair = new NVPair("id", id);
     SQL.delete("DELETE FROM user WHERE id=UUID_TO_BIN(:id)", idPair);
     SQL.delete("DELETE FROM parent_student WHERE student_id = UUID_TO_BIN(:id) || parent_id = UUID_TO_BIN(:id)", idPair);
+    SQL.delete("UPDATE school_info SET user_id = null WHERE user_id = UUID_TO_BIN(:id)", idPair);
   }
 }
