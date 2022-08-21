@@ -5,6 +5,7 @@ import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultTh
 import ch.teachu.teachu_admin.client.admin.AdminOutline;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm;
 import ch.teachu.teachu_admin.client.room.RoomForm;
+import ch.teachu.teachu_admin.client.schoolclass.SchoolClassForm;
 import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoForm;
 import ch.teachu.teachu_admin.client.semester.SemesterForm;
 import ch.teachu.teachu_admin.client.subject.SubjectForm;
@@ -161,6 +162,10 @@ public class Desktop extends AbstractDesktop {
       protected void execAction() {
         new SubjectForm().startNew();
       }
+
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
     }
 
     @Order(4000)
@@ -174,6 +179,10 @@ public class Desktop extends AbstractDesktop {
       protected void execAction() {
         new SemesterForm().startNew();
       }
+
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
     }
 
     @Order(5000)
@@ -186,6 +195,27 @@ public class Desktop extends AbstractDesktop {
       @Override
       protected void execAction() {
         new RoomForm().startNew();
+      }
+
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
+    }
+
+    @Order(6000)
+    public class SchoolClassMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("SchoolClass");
+      }
+
+      @Override
+      protected void execAction() {
+        new SchoolClassForm().startNew();
+      }
+
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
       }
     }
   }

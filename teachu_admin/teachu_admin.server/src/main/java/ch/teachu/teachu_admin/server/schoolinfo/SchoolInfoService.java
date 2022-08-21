@@ -1,20 +1,14 @@
 package ch.teachu.teachu_admin.server.schoolinfo;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
-import org.eclipse.scout.rt.platform.BEANS;
-import org.eclipse.scout.rt.platform.exception.VetoException;
-import org.eclipse.scout.rt.platform.holders.NVPair;
-import org.eclipse.scout.rt.platform.text.TEXTS;
-import org.eclipse.scout.rt.security.ACCESS;
-import org.eclipse.scout.rt.security.IAccessControlService;
-import org.eclipse.scout.rt.server.jdbc.SQL;
-import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
-
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.schoolinfo.ISchoolInfoService;
 import ch.teachu.teachu_admin.shared.schoolinfo.SchoolInfoFormData;
 import ch.teachu.teachu_admin.shared.schoolinfo.SchoolInfoTablePageData;
+import org.eclipse.scout.rt.platform.BEANS;
+import org.eclipse.scout.rt.platform.holders.NVPair;
+import org.eclipse.scout.rt.server.jdbc.SQL;
+import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class SchoolInfoService implements ISchoolInfoService {

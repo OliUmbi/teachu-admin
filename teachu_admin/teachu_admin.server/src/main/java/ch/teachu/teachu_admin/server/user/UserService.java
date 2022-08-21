@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.server.user;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.schoolconfig.ISchoolConfigService;
 import ch.teachu.teachu_admin.shared.user.IUserService;
 import ch.teachu.teachu_admin.shared.user.RoleCodeType;
@@ -48,9 +48,11 @@ public class UserService implements IUserService {
 
     SQL.insert("INSERT INTO user(id, email, password, role, first_name, last_name, birthday, sex, language," +
         "dark_theme, city, postal_code, street, phone, notes, creation_date, termination_date, active)" +
-        "VALUES (:id, :email, :password, :role, :firstName, :lastName, :birthday, :sex, :language, 0, :city, :postalCode," +
+        "VALUES (UUID_TO_BIN(:id), :email, :password, :role, :firstName, :lastName, :birthday, :sex, :language, 0, :city, :postalCode," +
         ":street, :phone, :notes, :creationDate, :termination, :active)",
       formData, new NVPair("creationDate", new Date()), new NVPair("language", defaultLanguage));
+
+    updateParentsChildren(formData);
     return formData;
   }
 
@@ -129,6 +131,8 @@ public class UserService implements IUserService {
   @Override
   public void delete(String id) {
     BEANS.get(AccessHelper.class).ensureAdmin();
-    SQL.delete("DELETE FROM user WHERE id=UUID_TO_BIN(:id)", new NVPair("id", id));
+    NVPair idPair = new NVPair("id", id);
+    SQL.delete("DELETE FROM user WHERE id=UUID_TO_BIN(:id)", idPair);
+    SQL.delete("DELETE FROM parent_student WHERE student_id = UUID_TO_BIN(:id) || parent_id = UUID_TO_BIN(:id)", idPair);
   }
 }

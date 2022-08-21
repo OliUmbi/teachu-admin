@@ -3,7 +3,6 @@ package ch.teachu.teachu_admin.client.event.school;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm.MainBox.CancelButton;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm.MainBox.GroupBox;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm.MainBox.OkButton;
-import ch.teachu.teachu_admin.client.semester.SemesterForm;
 import ch.teachu.teachu_admin.shared.event.school.ISchoolEventService;
 import ch.teachu.teachu_admin.shared.event.school.SchoolEventCodeType;
 import ch.teachu.teachu_admin.shared.event.school.SchoolEventFormData;
@@ -50,12 +49,12 @@ public class SchoolEventForm extends AbstractForm {
     return getFieldByClass(CancelButton.class);
   }
 
-  public SemesterForm.MainBox.GroupBox.FromField getFromField() {
-    return getFieldByClass(SemesterForm.MainBox.GroupBox.FromField.class);
+  public GroupBox.MetaInfoBox.FromField getFromField() {
+    return getFieldByClass(GroupBox.MetaInfoBox.FromField.class);
   }
 
-  public SemesterForm.MainBox.GroupBox.ToField getToField() {
-    return getFieldByClass(SemesterForm.MainBox.GroupBox.ToField.class);
+  public GroupBox.MetaInfoBox.ToField getToField() {
+    return getFieldByClass(GroupBox.MetaInfoBox.ToField.class);
   }
 
   @FormData
@@ -142,7 +141,7 @@ public class SchoolEventForm extends AbstractForm {
 
           @Override
           protected Date execValidateValue(Date rawValue) {
-            if (!getToField().getValue().after(rawValue)) {
+            if (getToField().getValue() != null && !getToField().getValue().after(rawValue)) {
               throw new VetoException(TEXTS.get("ToNotAfterFrom"));
             }
             return rawValue;
@@ -163,7 +162,7 @@ public class SchoolEventForm extends AbstractForm {
 
           @Override
           protected Date execValidateValue(Date rawValue) {
-            if (!rawValue.after(getFromField().getValue())) {
+            if (getFromField().getValue() != null && !rawValue.after(getFromField().getValue())) {
               throw new VetoException(TEXTS.get("ToNotAfterFrom"));
             }
             return rawValue;

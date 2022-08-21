@@ -4,6 +4,7 @@ import ch.teachu.teachu_admin.client.event.school.SchoolEventTablePage.Table;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
 import ch.teachu.teachu_admin.shared.event.SchoolEventTablePageData;
 import ch.teachu.teachu_admin.shared.event.school.ISchoolEventService;
 import ch.teachu.teachu_admin.shared.event.school.SchoolEventCodeType;
@@ -14,7 +15,6 @@ import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractDateColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
-import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.client.ui.messagebox.IMessageBox;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
@@ -26,7 +26,7 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import java.util.List;
 
 @Data(SchoolEventTablePageData.class)
-public class SchoolEventTablePage extends AbstractPageWithTable<Table> {
+public class SchoolEventTablePage extends AbstractTablePage<Table> {
   @Override
   protected boolean getConfiguredLeaf() {
     return true;
@@ -39,7 +39,7 @@ public class SchoolEventTablePage extends AbstractPageWithTable<Table> {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("Events");
+    return TEXTS.get("SchoolEvents");
   }
 
   public class Table extends AbstractTable {

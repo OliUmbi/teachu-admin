@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.server.subject;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.subject.ISubjectService;
 import ch.teachu.teachu_admin.shared.subject.SubjectFormData;
 import ch.teachu.teachu_admin.shared.subject.SubjectTablePageData;

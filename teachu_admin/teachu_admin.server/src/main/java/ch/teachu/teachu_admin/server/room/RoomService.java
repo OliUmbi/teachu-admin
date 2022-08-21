@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.server.room;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.room.IRoomService;
 import ch.teachu.teachu_admin.shared.room.RoomFormData;
 import ch.teachu.teachu_admin.shared.room.RoomTablePageData;

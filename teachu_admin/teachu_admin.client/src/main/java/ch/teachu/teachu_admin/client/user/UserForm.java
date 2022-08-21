@@ -481,7 +481,9 @@ public class UserForm extends AbstractForm {
             if (IValueField.PROP_VALUE.equals(e.getPropertyName())) {
               setVisible(ObjectUtility.isOneOf(role, RoleCodeType.StudentCode.ID, RoleCodeType.ParentCode.ID));
               setLabel(RoleCodeType.ParentCode.ID.equals(role) ? TEXTS.get("Children") : TEXTS.get("Parents"));
-              getParentChildField().getTable().deleteAllRows();
+              if (e.getOldValue() != null) {
+                getParentChildField().getTable().deleteAllRows();
+              }
             }
           });
         }
@@ -527,7 +529,7 @@ public class UserForm extends AbstractForm {
               }
 
               @Override
-              protected void execPrepareLookup(ILookupCall call, ITableRow row) {
+              protected void execPrepareLookup(ILookupCall<String> call, ITableRow row) {
                 ((UserLookupCall) call).setRole(RoleCodeType.StudentCode.ID.equals(role) ? RoleCodeType.ParentCode.ID : RoleCodeType.StudentCode.ID);
               }
             }

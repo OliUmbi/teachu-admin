@@ -1,20 +1,29 @@
 package ch.teachu.teachu_admin.client.schoolclass;
 
 import ch.teachu.teachu_admin.client.schoolclass.SchoolClassTablePage.Table;
+import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
+import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.schoolclass.ISchoolClassService;
 import ch.teachu.teachu_admin.shared.schoolclass.SchoolClassTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
-import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
+import org.eclipse.scout.rt.client.ui.messagebox.IMessageBox;
+import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
-import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
+import org.eclipse.scout.rt.security.ACCESS;
+
+import java.util.List;
 
 @Data(SchoolClassTablePageData.class)
-public class SchoolClassTablePage extends AbstractPageWithTable<Table> {
+public class SchoolClassTablePage extends AbstractTablePage<Table> {
 
   @Override
   protected boolean getConfiguredLeaf() {
@@ -22,13 +31,8 @@ public class SchoolClassTablePage extends AbstractPageWithTable<Table> {
   }
 
   @Override
-  protected void execLoadData(SearchFilter filter) {
-    importPageData(BEANS.get(ISchoolClassService.class).getSchoolClassTableData(filter));
-  }
-
-  @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("SchoolClass");
+    return TEXTS.get("SchoolClasses");
   }
 
   public class Table extends AbstractTable {
@@ -65,8 +69,8 @@ public class SchoolClassTablePage extends AbstractPageWithTable<Table> {
       }
 
       @Override
-      protected boolean getConfiguredAutoOptimizeWidth() {
-        return true;
+      protected int getConfiguredWidth() {
+        return 300;
       }
     }
 
@@ -78,8 +82,8 @@ public class SchoolClassTablePage extends AbstractPageWithTable<Table> {
       }
 
       @Override
-      protected boolean getConfiguredAutoOptimizeWidth() {
-        return true;
+      protected int getConfiguredWidth() {
+        return 200;
       }
     }
 
@@ -91,8 +95,55 @@ public class SchoolClassTablePage extends AbstractPageWithTable<Table> {
       }
 
       @Override
-      protected boolean getConfiguredAutoOptimizeWidth() {
-        return true;
+      protected int getConfiguredWidth() {
+        return 200;
+      }
+    }
+
+    @Order(1000)
+    public class CreateMenu extends AbstractCreateMenu {
+
+      @Override
+      protected void execAction() {
+        SchoolClassForm schoolClassForm = new SchoolClassForm();
+        schoolClassForm.startNew();
+        schoolClassForm.waitFor();
+        reloadPage();
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
+    }
+
+    @Order(2000)
+    public class EditMenu extends AbstractEditMenu {
+      @Override
+      protected void execAction() {
+        SchoolClassForm schoolClassForm = new SchoolClassForm();
+        schoolClassForm.setId(getIdColumn().getValue(getSelectedRow()));
+        schoolClassForm.startModify();
+        schoolClassForm.waitFor();
+        reloadPage();
+      }
+    }
+
+    @Order(3000)
+    public class DeleteMenu extends AbstractDeleteMenu {
+
+      @Override
+      protected void execAction() {
+        List<String> titles = getNameColumn().getValues(getSelectedRows());
+        if (MessageBoxes.createDeleteConfirmationMessage(titles).show() == IMessageBox.YES_OPTION) {
+          getIdColumn().getValues(getSelectedRows()).forEach(BEANS.get(ISchoolClassService.class)::delete);
+          getSelectedRows().forEach(ITableRow::delete);
+        }
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
       }
     }
   }

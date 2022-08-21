@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.server.semester;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.semester.ISemesterService;
 import ch.teachu.teachu_admin.shared.semester.SemesterFormData;
 import ch.teachu.teachu_admin.shared.semester.SemesterTablePageData;

@@ -3,6 +3,7 @@ package ch.teachu.teachu_admin.client.subject;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
 import ch.teachu.teachu_admin.client.subject.SubjectTablePage.Table;
 import ch.teachu.teachu_admin.shared.subject.ISubjectService;
 import ch.teachu.teachu_admin.shared.subject.SubjectTablePageData;
@@ -12,7 +13,6 @@ import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractBigDecimalColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
-import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.client.ui.messagebox.IMessageBox;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
@@ -23,7 +23,7 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import java.util.List;
 
 @Data(SubjectTablePageData.class)
-public class SubjectTablePage extends AbstractPageWithTable<Table> {
+public class SubjectTablePage extends AbstractTablePage<Table> {
   @Override
   protected boolean getConfiguredLeaf() {
     return true;

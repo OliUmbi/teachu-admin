@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.client.teacher;
 
-import ch.teachu.teachu_admin.client.schoolclass.SchoolClassTablePage;
+import ch.teachu.teachu_admin.client.schoolclass.TeacherSchoolClassTablePage;
 import ch.teachu.teachu_admin.shared.Icons;
 import ch.teachu.teachu_admin.shared.TeacherPermission;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutline;
@@ -15,7 +15,7 @@ public class TeacherOutline extends AbstractOutline {
   @Override
   protected void execCreateChildPages(List<IPage<?>> pageList) {
     super.execCreateChildPages(pageList);
-    pageList.add(new SchoolClassTablePage());
+    pageList.add(new TeacherSchoolClassTablePage());
   }
 
   @Override

@@ -4,6 +4,7 @@ import ch.teachu.teachu_admin.client.semester.SemesterTablePage.Table;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
+import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
 import ch.teachu.teachu_admin.shared.semester.ISemesterService;
 import ch.teachu.teachu_admin.shared.semester.SemesterTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
@@ -12,7 +13,6 @@ import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractDateColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
-import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.client.ui.messagebox.IMessageBox;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
@@ -23,7 +23,7 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import java.util.List;
 
 @Data(SemesterTablePageData.class)
-public class SemesterTablePage extends AbstractPageWithTable<Table> {
+public class SemesterTablePage extends AbstractTablePage<Table> {
   @Override
   protected boolean getConfiguredLeaf() {
     return true;

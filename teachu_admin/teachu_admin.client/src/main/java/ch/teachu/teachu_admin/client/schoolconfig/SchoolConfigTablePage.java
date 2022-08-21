@@ -1,6 +1,7 @@
 package ch.teachu.teachu_admin.client.schoolconfig;
 
 import ch.teachu.teachu_admin.client.schoolconfig.SchoolConfigTablePage.Table;
+import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
 import ch.teachu.teachu_admin.shared.schoolconfig.ISchoolConfigService;
 import ch.teachu.teachu_admin.shared.schoolconfig.SchoolConfigCodeType;
 import ch.teachu.teachu_admin.shared.schoolconfig.SchoolConfigTablePageData;
@@ -13,7 +14,6 @@ import org.eclipse.scout.rt.client.ui.basic.cell.Cell;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
-import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 @Data(SchoolConfigTablePageData.class)
-public class SchoolConfigTablePage extends AbstractPageWithTable<Table> {
+public class SchoolConfigTablePage extends AbstractTablePage<Table> {
   @Override
   protected boolean getConfiguredLeaf() {
     return true;

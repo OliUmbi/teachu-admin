@@ -116,6 +116,8 @@ public class SemesterForm extends AbstractForm {
           if (BEANS.get(ISemesterService.class).overlapsWithOtherSemesters(id, rawValue, getToField().getValue())) {
             throw new VetoException(TEXTS.get("OverlapsWithOtherSemesters"));
           }
+
+          getToField().clearErrorStatus();
           return rawValue;
         }
       }
@@ -140,6 +142,8 @@ public class SemesterForm extends AbstractForm {
           if (BEANS.get(ISemesterService.class).overlapsWithOtherSemesters(id, getFromField().getValue(), rawValue)) {
             throw new VetoException(TEXTS.get("OverlapsWithOtherSemesters"));
           }
+
+          getFromField().clearErrorStatus();
           return rawValue;
         }
       }

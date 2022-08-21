@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.server.schoolconfig;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.schoolconfig.ISchoolConfigService;
 import ch.teachu.teachu_admin.shared.schoolconfig.SchoolConfigFormData;
 import ch.teachu.teachu_admin.shared.schoolconfig.SchoolConfigTablePageData;

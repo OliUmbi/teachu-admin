@@ -1,6 +1,6 @@
 package ch.teachu.teachu_admin.server.event.school;
 
-import ch.teachu.teachu_admin.server.AccessHelper;
+import ch.teachu.teachu_admin.shared.AccessHelper;
 import ch.teachu.teachu_admin.shared.event.SchoolEventTablePageData;
 import ch.teachu.teachu_admin.shared.event.school.ISchoolEventService;
 import ch.teachu.teachu_admin.shared.event.school.SchoolEventFormData;
