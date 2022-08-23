@@ -42,7 +42,6 @@ public class SchoolClassSubjectService implements ISchoolClassSubjectService {
 
   @Override
   public SchoolClassSubjectFormData load(SchoolClassSubjectFormData formData) {
-    BEANS.get(AccessHelper.class).ensureAdmin();
     SQL.selectInto("SELECT BIN_TO_UUID(subject_id), BIN_TO_UUID(teacher_id), start_date, end_date, note " +
       "FROM school_class_subject " +
       "WHERE id = UUID_TO_BIN(:id) " +

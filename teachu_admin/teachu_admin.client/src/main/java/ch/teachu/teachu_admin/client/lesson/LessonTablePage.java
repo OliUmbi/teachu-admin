@@ -5,6 +5,7 @@ import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractTablePage;
+import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.lesson.ILessonService;
 import ch.teachu.teachu_admin.shared.lesson.LessonTablePageData;
 import ch.teachu.teachu_admin.shared.lesson.RoomLookupCall;
@@ -22,6 +23,7 @@ import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
+import org.eclipse.scout.rt.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
@@ -191,6 +193,11 @@ public class LessonTablePage extends AbstractTablePage<Table> {
         lessonForm.waitFor();
         reloadPage();
       }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
     }
 
     @Order(2000)
@@ -228,6 +235,11 @@ public class LessonTablePage extends AbstractTablePage<Table> {
       private String formatTime(Date time) {
         LocalTime localTime = LocalTime.ofInstant(time.toInstant(), ZoneId.systemDefault());
         return localTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
       }
     }
   }

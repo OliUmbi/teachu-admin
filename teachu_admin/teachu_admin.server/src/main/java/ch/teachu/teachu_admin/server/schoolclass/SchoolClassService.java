@@ -20,11 +20,15 @@ public class SchoolClassService implements ISchoolClassService {
     SchoolClassTablePageData pageData = new SchoolClassTablePageData();
     StringBuilder sql = new StringBuilder("SELECT BIN_TO_UUID(school_class.id), name, first_name, last_name " +
       "FROM school_class " +
-      "LEFT JOIN user ON (teacher_id = user.id) INTO :id, :name, :classTeacherFirstName, :classTeacherLastName");
+      "LEFT JOIN user ON (teacher_id = user.id) ");
 
     if (teacherId != null) {
-      sql.append(" WHERE teacher_id = UUID_TO_BIN(:teacherId)");
+      sql.append(" WHERE teacher_id = UUID_TO_BIN(:teacherId) " +
+        "OR UUID_TO_BIN(:teacherId) IN " +
+        "(SELECT school_class_subject.teacher_id FROM school_class_subject WHERE school_class_id = school_class.id) ");
     }
+
+    sql.append("INTO :id, :name, :classTeacherFirstName, :classTeacherLastName");
 
     SQL.selectInto(sql.toString(), pageData, new NVPair("teacherId", teacherId));
 
@@ -143,5 +147,6 @@ public class SchoolClassService implements ISchoolClassService {
     SQL.delete("DELETE FROM school_class_semester WHERE school_class_id = UUID_TO_BIN(:id)", idPair);
     SQL.delete("DELETE FROM lesson WHERE school_class_subject_id = (SELECT id FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id))", idPair);
     SQL.delete("DELETE FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id)", idPair);
+    SQL.delete("DELETE FROM school_class_event WHERE school_class_id = UUID_TO_BIN(:id)", idPair);
   }
 }

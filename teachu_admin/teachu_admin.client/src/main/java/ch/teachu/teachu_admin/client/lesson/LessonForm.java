@@ -4,6 +4,7 @@ import ch.teachu.teachu_admin.client.lesson.LessonForm.MainBox.CancelButton;
 import ch.teachu.teachu_admin.client.lesson.LessonForm.MainBox.GroupBox;
 import ch.teachu.teachu_admin.client.lesson.LessonForm.MainBox.OkButton;
 import ch.teachu.teachu_admin.client.schoolclass.subject.SchoolClassSubjectForm;
+import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.lesson.ILessonService;
 import ch.teachu.teachu_admin.shared.lesson.LessonFormData;
 import ch.teachu.teachu_admin.shared.lesson.RoomLookupCall;
@@ -25,6 +26,7 @@ import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.exception.VetoException;
 import org.eclipse.scout.rt.platform.text.TEXTS;
 import org.eclipse.scout.rt.platform.util.CollectionUtility;
+import org.eclipse.scout.rt.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
@@ -288,6 +290,7 @@ public class LessonForm extends AbstractForm {
       formData.setId(id);
       formData.setSchoolClassId(schoolClassId);
       formData = BEANS.get(ILessonService.class).load(formData);
+      setEnabledGranted(ACCESS.check(new AdminPermission()));
       importFormData(formData);
     }
 

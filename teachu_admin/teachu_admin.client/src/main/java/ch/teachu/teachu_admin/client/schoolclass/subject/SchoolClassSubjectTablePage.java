@@ -2,6 +2,7 @@ package ch.teachu.teachu_admin.client.schoolclass.subject;
 
 import ch.teachu.teachu_admin.client.schoolclass.subject.SchoolClassSubjectTablePage.Table;
 import ch.teachu.teachu_admin.client.shared.*;
+import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.lesson.SubjectLookupCall;
 import ch.teachu.teachu_admin.shared.schoolclass.subject.ISchoolClassSubjectCheckDeletable;
 import ch.teachu.teachu_admin.shared.schoolclass.subject.ISchoolClassSubjectService;
@@ -18,6 +19,7 @@ import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
+import org.eclipse.scout.rt.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
@@ -166,6 +168,11 @@ public class SchoolClassSubjectTablePage extends AbstractTablePage<Table> {
         schoolClassSubjectForm.waitFor();
         reloadPage();
       }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
     }
 
     @Order(2000)
@@ -194,6 +201,11 @@ public class SchoolClassSubjectTablePage extends AbstractTablePage<Table> {
             getSelectedRows().forEach(ITableRow::delete);
           }
         }
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
       }
     }
   }

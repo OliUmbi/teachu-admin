@@ -16,6 +16,6 @@ public class TeacherSchoolClassTablePage extends SchoolClassTablePage {
 
   @Override
   protected IPage<?> execCreateChildPage(ITableRow row) {
-    return super.execCreateChildPage(row);
+    return new TeacherSchoolClassNodePage(getTable().getIdColumn().getValue(row));
   }
 }
