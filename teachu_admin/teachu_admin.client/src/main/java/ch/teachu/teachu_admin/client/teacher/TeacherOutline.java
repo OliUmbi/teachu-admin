@@ -1,5 +1,6 @@
 package ch.teachu.teachu_admin.client.teacher;
 
+import ch.teachu.teachu_admin.client.exam.ExamTablePage;
 import ch.teachu.teachu_admin.client.schoolclass.TeacherSchoolClassTablePage;
 import ch.teachu.teachu_admin.shared.Icons;
 import ch.teachu.teachu_admin.shared.TeacherPermission;
@@ -16,6 +17,7 @@ public class TeacherOutline extends AbstractOutline {
   protected void execCreateChildPages(List<IPage<?>> pageList) {
     super.execCreateChildPages(pageList);
     pageList.add(new TeacherSchoolClassTablePage());
+    pageList.add(new ExamTablePage());
   }
 
   @Override

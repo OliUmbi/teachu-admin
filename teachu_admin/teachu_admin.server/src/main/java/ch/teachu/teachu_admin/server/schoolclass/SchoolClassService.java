@@ -148,5 +148,7 @@ public class SchoolClassService implements ISchoolClassService {
     SQL.delete("DELETE FROM lesson WHERE school_class_subject_id = (SELECT id FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id))", idPair);
     SQL.delete("DELETE FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id)", idPair);
     SQL.delete("DELETE FROM school_class_event WHERE school_class_id = UUID_TO_BIN(:id)", idPair);
+    SQL.delete("DELETE FROM exam WHERE school_class_subject_id = (SELECT id FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id))", idPair);
+    SQL.delete("DELETE FROM grade WHERE exam_id = (SELECT exam.id FROM exam WHERE school_class_subject_id = (SELECT id FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id)))", idPair);
   }
 }

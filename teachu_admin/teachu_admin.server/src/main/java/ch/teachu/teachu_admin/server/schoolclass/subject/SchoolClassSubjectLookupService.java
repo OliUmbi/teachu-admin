@@ -13,6 +13,7 @@ public class SchoolClassSubjectLookupService extends AbstractSqlLookupService<St
       "<key> AND school_class_subject.id = UUID_TO_BIN(:key)</key> " +
       "<text> AND UPPER(name) LIKE UPPER(:text||'%') </text> " +
       "<all></all> " +
-      "AND school_class_id = UUID_TO_BIN(:schoolClassId) ";
+      "AND school_class_id = UUID_TO_BIN(:schoolClassId) " +
+      "AND (:teacherId IS NULL OR teacher_id = UUID_TO_BIN(:teacherId))";
   }
 }

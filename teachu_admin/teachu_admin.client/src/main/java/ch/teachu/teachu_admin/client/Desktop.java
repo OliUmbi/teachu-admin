@@ -114,6 +114,11 @@ public class Desktop extends AbstractDesktop {
       protected void execAction() {
         new UserForm().startNew();
       }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
+      }
     }
 
     @Order(1000)

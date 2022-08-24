@@ -8,7 +8,6 @@ import ch.teachu.teachu_admin.shared.schoolclass.subject.ISchoolClassSubjectChec
 import ch.teachu.teachu_admin.shared.schoolclass.subject.ISchoolClassSubjectService;
 import ch.teachu.teachu_admin.shared.schoolclass.subject.SchoolClassSubjectTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
-import org.eclipse.scout.rt.client.ui.action.menu.IMenu;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractDateColumn;
@@ -28,7 +27,7 @@ import java.util.List;
 @Data(SchoolClassSubjectTablePageData.class)
 public class SchoolClassSubjectTablePage extends AbstractTablePage<Table> {
 
-  private final String schoolClassId;
+  protected final String schoolClassId;
 
   public SchoolClassSubjectTablePage(String schoolClassId) {
     this.schoolClassId = schoolClassId;
@@ -72,11 +71,6 @@ public class SchoolClassSubjectTablePage extends AbstractTablePage<Table> {
 
     public TeacherLastNameColumn getTeacherLastNameColumn() {
       return getColumnSet().getColumnByClass(TeacherLastNameColumn.class);
-    }
-
-    @Override
-    protected Class<? extends IMenu> getConfiguredDefaultMenu() {
-      return EditMenu.class;
     }
 
     @Order(1000)
