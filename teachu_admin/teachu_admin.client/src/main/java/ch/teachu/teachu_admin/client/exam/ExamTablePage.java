@@ -1,6 +1,7 @@
 package ch.teachu.teachu_admin.client.exam;
 
 import ch.teachu.teachu_admin.client.exam.ExamTablePage.Table;
+import ch.teachu.teachu_admin.client.grade.GradeTablePage;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractEditMenu;
@@ -16,6 +17,7 @@ import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractBigDecimalColu
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractDateColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.messagebox.IMessageBox;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
@@ -40,13 +42,13 @@ public class ExamTablePage extends AbstractTablePage<Table> {
   }
 
   @Override
-  protected boolean getConfiguredLeaf() {
-    return true;
+  protected void execLoadData(SearchFilter filter) {
+    importPageData(BEANS.get(IExamService.class).getExamTableData(filter, schoolClassSubjectId));
   }
 
   @Override
-  protected void execLoadData(SearchFilter filter) {
-    importPageData(BEANS.get(IExamService.class).getExamTableData(filter, schoolClassSubjectId));
+  protected IPage<?> execCreateChildPage(ITableRow row) {
+    return new GradeTablePage(getTable().getIdColumn().getValue(row));
   }
 
   @Override
@@ -55,6 +57,7 @@ public class ExamTablePage extends AbstractTablePage<Table> {
   }
 
   public class Table extends AbstractTable {
+
     public DateColumn getDateColumn() {
       return getColumnSet().getColumnByClass(DateColumn.class);
     }

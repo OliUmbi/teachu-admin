@@ -16,13 +16,16 @@ public class LessonService implements ILessonService {
   @Override
   public LessonTablePageData getLessonTableData(SearchFilter filter, String schoolClassId) {
     LessonTablePageData pageData = new LessonTablePageData();
-    SQL.selectInto("SELECT BIN_TO_UUID(lesson.id), BIN_TO_UUID(school_class_subject_id), start_time, end_time, weekday, BIN_TO_UUID(room_id) " +
-        "FROM lesson " +
-        "LEFT JOIN timetable ON (timetable_id = timetable.id) " +
-        "LEFT JOIN school_class_subject ON (school_class_subject_id = school_class_subject.id) " +
-        "WHERE school_class_id = UUID_TO_BIN(:schoolClassId) " +
-        "INTO :id, :subject, :startTime, :endTime, :weekday, :room",
-      new NVPair("schoolClassId", schoolClassId), pageData);
+    StringBuilder sql = new StringBuilder("SELECT BIN_TO_UUID(lesson.id), BIN_TO_UUID(school_class_subject_id), start_time, end_time, weekday, BIN_TO_UUID(room_id), BIN_TO_UUID(school_class_id) " +
+      "FROM lesson " +
+      "LEFT JOIN timetable ON (timetable_id = timetable.id) " +
+      "LEFT JOIN school_class_subject ON (school_class_subject_id = school_class_subject.id) ");
+
+    if (schoolClassId != null) {
+      sql.append("WHERE school_class_id = UUID_TO_BIN(:inSchoolClassId) ");
+    }
+    sql.append("INTO :id, :subject, :startTime, :endTime, :weekday, :room, :schoolClass");
+    SQL.selectInto(sql.toString(), new NVPair("inSchoolClassId", schoolClassId), pageData);
     return pageData;
   }
 

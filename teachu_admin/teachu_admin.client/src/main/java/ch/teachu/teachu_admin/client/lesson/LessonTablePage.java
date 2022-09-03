@@ -10,6 +10,7 @@ import ch.teachu.teachu_admin.shared.lesson.ILessonService;
 import ch.teachu.teachu_admin.shared.lesson.LessonTablePageData;
 import ch.teachu.teachu_admin.shared.lesson.RoomLookupCall;
 import ch.teachu.teachu_admin.shared.lesson.WeekdayCodeType;
+import ch.teachu.teachu_admin.shared.schoolclass.SchoolClassLookupCall;
 import ch.teachu.teachu_admin.shared.schoolclass.subject.SchoolClassSubjectLookupCall;
 import org.eclipse.scout.rt.client.dto.Data;
 import org.eclipse.scout.rt.client.ui.action.menu.IMenu;
@@ -39,6 +40,10 @@ import java.util.stream.Collectors;
 public class LessonTablePage extends AbstractTablePage<Table> {
 
   private final String schoolClassId;
+
+  public LessonTablePage() {
+    this(null);
+  }
 
   public LessonTablePage(String schoolClassId) {
     this.schoolClassId = schoolClassId;
@@ -70,6 +75,10 @@ public class LessonTablePage extends AbstractTablePage<Table> {
 
     public RoomColumn getRoomColumn() {
       return getColumnSet().getColumnByClass(RoomColumn.class);
+    }
+
+    public SchoolClassColumn getSchoolClassColumn() {
+      return getColumnSet().getColumnByClass(SchoolClassColumn.class);
     }
 
     public StartTimeColumn getStartTimeColumn() {
@@ -116,7 +125,7 @@ public class LessonTablePage extends AbstractTablePage<Table> {
 
       @Override
       protected void execPrepareLookup(ILookupCall<String> call, ITableRow row) {
-        ((SchoolClassSubjectLookupCall) call).setSchoolClassId(schoolClassId);
+        ((SchoolClassSubjectLookupCall) call).setSchoolClassId(schoolClassId == null ? getSchoolClassColumn().getValue(row) : schoolClassId);
       }
     }
 
@@ -182,6 +191,31 @@ public class LessonTablePage extends AbstractTablePage<Table> {
       }
     }
 
+    @Order(6000)
+    public class SchoolClassColumn extends AbstractSmartColumn<String> {
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("SchoolClass");
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 300;
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return schoolClassId == null;
+      }
+
+      @Override
+      protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
+        return SchoolClassLookupCall.class;
+      }
+
+
+    }
+
     @Order(1000)
     public class CreateMenu extends AbstractCreateMenu {
 
@@ -210,6 +244,11 @@ public class LessonTablePage extends AbstractTablePage<Table> {
         lessonForm.startModify();
         lessonForm.waitFor();
         reloadPage();
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return ACCESS.check(new AdminPermission());
       }
     }
 

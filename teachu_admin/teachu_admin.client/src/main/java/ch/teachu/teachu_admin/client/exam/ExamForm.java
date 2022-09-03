@@ -90,7 +90,7 @@ public class ExamForm extends AbstractForm {
     this.id = id;
   }
 
-
+  @FormData
   public String getSchoolClassSubjectId() {
     return getSubjectField().getValue();
   }
@@ -98,7 +98,7 @@ public class ExamForm extends AbstractForm {
   @FormData
   public void setSchoolClassSubjectId(String schoolClassSubjectId) {
     getSubjectField().setValue(schoolClassSubjectId);
-    schoolClassSubjectSet = true;
+    schoolClassSubjectSet = schoolClassSubjectId != null;
   }
 
   @Order(1000)
@@ -176,6 +176,11 @@ public class ExamForm extends AbstractForm {
         @Override
         protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
           return SchoolClassLookupCall.class;
+        }
+
+        @Override
+        protected void execPrepareLookup(ILookupCall<String> call) {
+          ((SchoolClassLookupCall) call).setTeacherId(BEANS.get(AccessHelper.class).getCurrentUserId());
         }
 
         @Override
@@ -299,9 +304,9 @@ public class ExamForm extends AbstractForm {
     protected void execLoad() {
       ExamFormData formData = new ExamFormData();
       exportFormData(formData);
+      formData.setId(id);
       formData = BEANS.get(IExamService.class).load(formData);
       importFormData(formData);
-      formData.setId(id);
     }
 
     @Override
