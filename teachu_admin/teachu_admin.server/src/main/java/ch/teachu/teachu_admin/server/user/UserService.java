@@ -46,22 +46,37 @@ public class UserService implements IUserService {
 
     String defaultLanguage = BEANS.get(ISchoolConfigService.class).getConfig(LANGUAGE_CONFIG);
 
+    String imageId = formData.getImage() == null ? null : UUID.randomUUID().toString();
+    if (imageId != null) {
+      createImage(formData, imageId);
+    }
+
     SQL.insert("INSERT INTO user(id, email, password, role, first_name, last_name, birthday, sex, language," +
-        "dark_theme, city, postal_code, street, phone, notes, creation_date, termination_date, active)" +
+        "dark_theme, city, postal_code, street, phone, notes, creation_date, termination_date, active, img)" +
         "VALUES (UUID_TO_BIN(:id), :email, :password, :role, :firstName, :lastName, :birthday, :sex, :language, 0, :city, :postalCode," +
-        ":street, :phone, :notes, :creationDate, :termination, :active)",
-      formData, new NVPair("creationDate", new Date()), new NVPair("language", defaultLanguage));
+        ":street, :phone, :notes, :creationDate, :termination, :active, UUID_TO_BIN(:imageId))",
+      formData, new NVPair("creationDate", new Date()), new NVPair("language", defaultLanguage), new NVPair("imageId", imageId));
 
     updateParentsChildren(formData);
     return formData;
+  }
+
+  private void createImage(UserFormData formData, String imageId) {
+    SQL.insert("INSERT INTO image(id, image) VALUES (UUID_TO_BIN(:id), :image)",
+      new NVPair("id", imageId),
+      new NVPair("image", formData.getImage()));
   }
 
   @Override
   public UserFormData load(UserFormData formData) {
     BEANS.get(AccessHelper.class).ensureAdmin();
     SQL.selectInto("SELECT email, role, first_name, last_name, birthday, sex, city, postal_code, street, phone," +
-      "notes, termination_date, active FROM user WHERE id = UUID_TO_BIN(:id) INTO :email, :role, :firstName, :lastName, :birthday," +
-      ":sex, :city, :postalCode, :street, :phone, :notes, :termination, :active", formData);
+      "notes, termination_date, active, image " +
+      "FROM user " +
+      "LEFT JOIN image ON (img = image.id) " +
+      "WHERE user.id = UUID_TO_BIN(:id) " +
+      "INTO :email, :role, :firstName, :lastName, :birthday," +
+      ":sex, :city, :postalCode, :street, :phone, :notes, :termination, :active, :image", formData);
 
     switch (formData.getRole().getValue()) {
       case RoleCodeType.StudentCode.ID:
@@ -86,16 +101,37 @@ public class UserService implements IUserService {
   @Override
   public UserFormData store(UserFormData formData) {
     BEANS.get(AccessHelper.class).ensureAdmin();
+
+    boolean newImage = false;
+    String imageId = (String) SQL.select("SELECT BIN_TO_UUID(img) FROM user WHERE id=UUID_TO_BIN(:id)", formData)[0][0];
+    if (imageId == null && formData.getImage() != null) {
+      newImage = true;
+      imageId = UUID.randomUUID().toString();
+    }
+
     StringBuilder sql = new StringBuilder("UPDATE user SET email = :email, role=:role, first_name = :firstName," +
       "last_name = :lastName, birthday = :birthday, sex = :sex, city = :city, postal_code = :postalCode, street = :street," +
-      "phone = :phone, notes = :notes, termination_date = :termination, active = :active");
+      "phone = :phone, notes = :notes, termination_date = :termination, active = :active, img = UUID_TO_BIN(:imageId)");
 
     if (formData.getPassword().getValue() != null) {
       formData.getPassword().setValue(new BCryptPasswordEncoder().encode(formData.getPassword().getValue()));
       sql.append(", password = :password");
     }
     sql.append(" WHERE id=UUID_TO_BIN(:id)");
-    SQL.update(sql.toString(), formData);
+
+    SQL.update(sql.toString(), formData, new NVPair("imageId", imageId));
+
+    if (formData.getImage() != null) {
+      if (newImage) {
+        createImage(formData, imageId);
+      } else {
+        SQL.update("UPDATE image " +
+            "SET image = :image " +
+            "WHERE id = UUID_TO_BIN(:imageId)",
+          new NVPair("imageId", imageId), formData);
+      }
+    }
+
 
     updateParentsChildren(formData);
     return formData;
@@ -132,6 +168,7 @@ public class UserService implements IUserService {
   public void delete(String id) {
     BEANS.get(AccessHelper.class).ensureAdmin();
     NVPair idPair = new NVPair("id", id);
+    SQL.delete("DELETE FROM image WHERE image.id=(SELECT user.img FROM user WHERE id=UUID_TO_BIN(:id))", new NVPair("id", id));
     SQL.delete("DELETE FROM user WHERE id=UUID_TO_BIN(:id)", idPair);
     SQL.delete("DELETE FROM parent_student WHERE student_id = UUID_TO_BIN(:id) || parent_id = UUID_TO_BIN(:id)", idPair);
     SQL.delete("UPDATE school_info SET user_id = null WHERE user_id = UUID_TO_BIN(:id)", idPair);

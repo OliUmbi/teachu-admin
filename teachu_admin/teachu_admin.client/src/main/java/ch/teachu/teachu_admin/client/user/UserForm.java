@@ -19,7 +19,9 @@ import org.eclipse.scout.rt.client.ui.form.fields.booleanfield.AbstractBooleanFi
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.datefield.AbstractDateField;
+import org.eclipse.scout.rt.client.ui.form.fields.filechooserbutton.AbstractFileChooserButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.imagefield.AbstractImageField;
 import org.eclipse.scout.rt.client.ui.form.fields.longfield.AbstractLongField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
@@ -49,6 +51,7 @@ public class UserForm extends AbstractForm {
   private String id;
   private String role;
   private final String emailDomain = BEANS.get(ISchoolConfigService.class).getConfig("EmailDomain");
+  private byte[] image;
 
   @Override
   protected String getConfiguredTitle() {
@@ -147,6 +150,10 @@ public class UserForm extends AbstractForm {
     return getFieldByClass(MainBox.GeneralBox.TerminationField.class);
   }
 
+  public MainBox.DetailsBox.ImageGroupBox.ImageField getImageField() {
+    return getFieldByClass(MainBox.DetailsBox.ImageGroupBox.ImageField.class);
+  }
+
   @FormData
   public String getId() {
     return id;
@@ -155,6 +162,16 @@ public class UserForm extends AbstractForm {
   @FormData
   public void setId(String id) {
     this.id = id;
+  }
+
+  @FormData
+  public byte[] getImage() {
+    return image;
+  }
+
+  @FormData
+  public void setImage(byte[] image) {
+    this.image = image;
   }
 
   @Override
@@ -583,6 +600,56 @@ public class UserForm extends AbstractForm {
           }
         }
       }
+
+      @Order(3000)
+      public class ImageGroupBox extends AbstractGroupBox {
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("Image");
+        }
+
+        @Override
+        protected int getConfiguredGridColumnCount() {
+          return 1;
+        }
+
+        @Order(2250)
+        public class ImageField extends AbstractImageField {
+
+          @Override
+          protected boolean getConfiguredAutoFit() {
+            return true;
+          }
+
+          @Override
+          protected boolean getConfiguredLabelVisible() {
+            return false;
+          }
+
+          @Override
+          protected int getConfiguredGridH() {
+            return 3;
+          }
+        }
+
+        @Order(2150)
+        public class UploadButton extends AbstractFileChooserButton {
+          @Override
+          protected String getConfiguredLabel() {
+            return TEXTS.get("UploadImage");
+          }
+
+          @Override
+          protected void execChangedValue() {
+            getImageField().setImage(getValue().getContent());
+          }
+
+          @Override
+          protected List<String> getConfiguredFileExtensions() {
+            return Arrays.asList("png", "jpg", "jpeg", "gif");
+          }
+        }
+      }
     }
 
     @Order(2000)
@@ -619,6 +686,7 @@ public class UserForm extends AbstractForm {
     protected void execStore() {
       UserFormData formData = new UserFormData();
       exportFormData(formData);
+      formData.setImage((byte[]) getImageField().getImage());
       formData = BEANS.get(IUserService.class).create(formData);
       importFormData(formData);
     }
@@ -635,6 +703,7 @@ public class UserForm extends AbstractForm {
       importFormData(formData);
       getActiveField().setValue(formData.getActive().getValue() == null || formData.getActive().getValue());
       setSubTitle(formData.getFirstName().getValue() + " " + formData.getLastName().getValue());
+      getImageField().setImage(formData.getImage());
     }
 
     @Override
@@ -642,6 +711,7 @@ public class UserForm extends AbstractForm {
       UserFormData formData = new UserFormData();
       exportFormData(formData);
       formData.setId(id);
+      formData.setImage((byte[]) getImageField().getImage());
       formData = BEANS.get(IUserService.class).store(formData);
       importFormData(formData);
     }

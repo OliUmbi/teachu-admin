@@ -15,6 +15,6 @@ public class CheckUserSchoolClassSubjectDeletable implements IUserCheckDeletable
       "FROM school_class_subject " +
       "JOIN school_class ON (school_class_id = school_class.id) " +
       "JOIN subject ON (subject.id = subject_id)" +
-      "WHERE BIN_TO_UUID(teacher_id) IN :ids";
+      "WHERE BIN_TO_UUID(school_class_subject.teacher_id) IN :ids";
   }
 }

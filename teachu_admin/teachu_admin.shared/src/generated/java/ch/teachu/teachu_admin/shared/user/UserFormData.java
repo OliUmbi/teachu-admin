@@ -1,5 +1,6 @@
 package ch.teachu.teachu_admin.shared.user;
 
+import org.eclipse.scout.rt.platform.resource.BinaryResource;
 import org.eclipse.scout.rt.shared.data.basic.table.AbstractTableRowData;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
@@ -55,6 +56,24 @@ public class UserFormData extends AbstractFormData {
     return getPropertyByClass(IdProperty.class);
   }
 
+  /**
+   * access method for property Image.
+   */
+  public byte[] getImage() {
+    return getImageProperty().getValue();
+  }
+
+  /**
+   * access method for property Image.
+   */
+  public void setImage(byte[] image) {
+    getImageProperty().setValue(image);
+  }
+
+  public ImageProperty getImageProperty() {
+    return getPropertyByClass(ImageProperty.class);
+  }
+
   public LastName getLastName() {
     return getFieldByClass(LastName.class);
   }
@@ -95,6 +114,10 @@ public class UserFormData extends AbstractFormData {
     return getFieldByClass(Termination.class);
   }
 
+  public Upload getUpload() {
+    return getFieldByClass(Upload.class);
+  }
+
   public static class Active extends AbstractValueFieldData<Boolean> {
     private static final long serialVersionUID = 1L;
   }
@@ -116,6 +139,10 @@ public class UserFormData extends AbstractFormData {
   }
 
   public static class IdProperty extends AbstractPropertyData<String> {
+    private static final long serialVersionUID = 1L;
+  }
+
+  public static class ImageProperty extends AbstractPropertyData<byte[]> {
     private static final long serialVersionUID = 1L;
   }
 
@@ -204,6 +231,10 @@ public class UserFormData extends AbstractFormData {
   }
 
   public static class Termination extends AbstractValueFieldData<Date> {
+    private static final long serialVersionUID = 1L;
+  }
+
+  public static class Upload extends AbstractValueFieldData<BinaryResource> {
     private static final long serialVersionUID = 1L;
   }
 }
