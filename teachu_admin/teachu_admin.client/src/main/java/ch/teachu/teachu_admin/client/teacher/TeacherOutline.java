@@ -1,5 +1,6 @@
 package ch.teachu.teachu_admin.client.teacher;
 
+import ch.teachu.teachu_admin.client.chatgroup.ChatGroupTablePage;
 import ch.teachu.teachu_admin.client.exam.ExamTablePage;
 import ch.teachu.teachu_admin.client.lesson.LessonTablePage;
 import ch.teachu.teachu_admin.client.schoolclass.TeacherSchoolClassTablePage;
@@ -20,6 +21,7 @@ public class TeacherOutline extends AbstractOutline {
     pageList.add(new TeacherSchoolClassTablePage());
     pageList.add(new ExamTablePage());
     pageList.add(new LessonTablePage());
+    pageList.add(new ChatGroupTablePage());
   }
 
   @Override

@@ -12,6 +12,6 @@ public class UserLookupService extends AbstractSqlLookupService<String> implemen
       "<key> AND id = UUID_TO_BIN(:key)</key> " +
       "<text> AND UPPER(CONCAT(first_name, ' ', last_name)) LIKE UPPER(:text||'%') </text> " +
       "<all></all> " +
-      "AND role = :role ";
+      "AND (:role IS NULL OR role = :role) ";
   }
 }

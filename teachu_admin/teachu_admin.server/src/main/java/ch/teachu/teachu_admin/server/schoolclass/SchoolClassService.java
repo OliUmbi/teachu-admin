@@ -1,6 +1,7 @@
 package ch.teachu.teachu_admin.server.schoolclass;
 
 import ch.teachu.teachu_admin.shared.AccessHelper;
+import ch.teachu.teachu_admin.shared.chatgroup.ChatGroupFormData;
 import ch.teachu.teachu_admin.shared.schoolclass.ISchoolClassService;
 import ch.teachu.teachu_admin.shared.schoolclass.SchoolClassFormData;
 import ch.teachu.teachu_admin.shared.schoolclass.SchoolClassTablePageData;
@@ -150,5 +151,22 @@ public class SchoolClassService implements ISchoolClassService {
     SQL.delete("DELETE FROM school_class_event WHERE school_class_id = UUID_TO_BIN(:id)", idPair);
     SQL.delete("DELETE FROM exam WHERE school_class_subject_id = (SELECT id FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id))", idPair);
     SQL.delete("DELETE FROM grade WHERE exam_id = (SELECT exam.id FROM exam WHERE school_class_subject_id = (SELECT id FROM school_class_subject WHERE school_class_id = UUID_TO_BIN(:id)))", idPair);
+  }
+
+  @Override
+  public ChatGroupFormData getCreateChatGroupFormData(String schoolClassId) {
+    ChatGroupFormData formData = new ChatGroupFormData();
+    SQL.selectInto("SELECT name FROM school_class WHERE id = UUID_TO_BIN(:schoolClassId) INTO :title", formData, new NVPair("schoolClassId", schoolClassId));
+
+    ChatGroupFormData.Members.MembersRowData creatorRow = new ChatGroupFormData.Members.MembersRowData();
+    creatorRow.setName(BEANS.get(AccessHelper.class).getCurrentUserId());
+    formData.getMembers().addRow(creatorRow);
+    Object[][] students = SQL.select("SELECT BIN_TO_UUID(user_id) FROM school_class_user WHERE school_class_id = UUID_TO_BIN(:schoolClassId)", formData, new NVPair("schoolClassId", schoolClassId));
+    for (Object[] student : students) {
+      ChatGroupFormData.Members.MembersRowData membersRowData = new ChatGroupFormData.Members.MembersRowData();
+      membersRowData.setName((String) student[0]);
+      formData.getMembers().addRow(membersRowData);
+    }
+    return formData;
   }
 }

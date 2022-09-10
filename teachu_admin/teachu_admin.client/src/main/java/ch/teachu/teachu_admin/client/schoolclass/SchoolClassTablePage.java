@@ -1,5 +1,6 @@
 package ch.teachu.teachu_admin.client.schoolclass;
 
+import ch.teachu.teachu_admin.client.chatgroup.ChatGroupForm;
 import ch.teachu.teachu_admin.client.schoolclass.SchoolClassTablePage.Table;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
@@ -9,6 +10,9 @@ import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.schoolclass.ISchoolClassService;
 import ch.teachu.teachu_admin.shared.schoolclass.SchoolClassTablePageData;
 import org.eclipse.scout.rt.client.dto.Data;
+import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
+import org.eclipse.scout.rt.client.ui.action.menu.IMenuType;
+import org.eclipse.scout.rt.client.ui.action.menu.TableMenuType;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractColumn;
@@ -18,9 +22,11 @@ import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.text.TEXTS;
+import org.eclipse.scout.rt.platform.util.CollectionUtility;
 import org.eclipse.scout.rt.security.ACCESS;
 
 import java.util.List;
+import java.util.Set;
 
 @Data(SchoolClassTablePageData.class)
 public class SchoolClassTablePage extends AbstractTablePage<Table> {
@@ -144,6 +150,24 @@ public class SchoolClassTablePage extends AbstractTablePage<Table> {
       @Override
       protected boolean getConfiguredVisible() {
         return ACCESS.check(new AdminPermission());
+      }
+    }
+
+    @Order(4000)
+    public class CreateChatGroupMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("CreateChatGroup");
+      }
+
+      @Override
+      protected Set<? extends IMenuType> getConfiguredMenuTypes() {
+        return CollectionUtility.hashSet(CollectionUtility.hashSet(TableMenuType.SingleSelection));
+      }
+
+      @Override
+      protected void execAction() {
+        new ChatGroupForm().startNew(BEANS.get(ISchoolClassService.class).getCreateChatGroupFormData(getIdColumn().getValue(getSelectedRow())));
       }
     }
   }

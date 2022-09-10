@@ -3,6 +3,7 @@ package ch.teachu.teachu_admin.client;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DarkThemeMenu;
 import ch.teachu.teachu_admin.client.Desktop.UserProfileMenu.ThemeMenu.DefaultThemeMenu;
 import ch.teachu.teachu_admin.client.admin.AdminOutline;
+import ch.teachu.teachu_admin.client.chatgroup.ChatGroupForm;
 import ch.teachu.teachu_admin.client.event.school.SchoolEventForm;
 import ch.teachu.teachu_admin.client.room.RoomForm;
 import ch.teachu.teachu_admin.client.schoolclass.SchoolClassForm;
@@ -221,6 +222,19 @@ public class Desktop extends AbstractDesktop {
 
       protected boolean getConfiguredVisible() {
         return ACCESS.check(new AdminPermission());
+      }
+    }
+
+    @Order(7000)
+    public class ChatGroupMenu extends AbstractMenu {
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("ChatGroup");
+      }
+
+      @Override
+      protected void execAction() {
+        new ChatGroupForm().startNew();
       }
     }
   }
