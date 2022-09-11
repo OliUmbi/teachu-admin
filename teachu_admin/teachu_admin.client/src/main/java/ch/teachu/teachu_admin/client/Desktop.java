@@ -81,9 +81,11 @@ public class Desktop extends AbstractDesktop {
     if (DarkThemeMenu.DARK_THEME.equalsIgnoreCase(newThemeName)) {
       darkMenu.setIconId(Icons.CheckedBold);
       defaultMenu.setIconId(null);
+      setLogoId(Icons.AppLogoDark);
     } else {
       darkMenu.setIconId(null);
       defaultMenu.setIconId(Icons.CheckedBold);
+      setLogoId(Icons.AppLogo);
     }
   }
 
