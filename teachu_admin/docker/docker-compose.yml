@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+
+  teachu-mysql-db:
+    container_name: teachu-mysql-db
+    build: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=''
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true # change when using as prod
+      - MYSQL_RANDOM_ROOT_PASSWORD=false
+      # custom user
+      - MYSQL_USER='dev'
+      - MYSQL_PASS='dev'
+    networks:
+      - teachu-net-admin
+    ports:
+      - "3306:3306"
+    volumes:
+      - teachu-data:/var/lib/mysql
+
+  teachu-admin-server:
+    container_name: teachu-admin-server
+    build: ../teachu_admin.server.app.war
+    depends_on:
+      - teachu-mysql-db
+    networks:
+      - teachu-net-admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ./logs/server-log
+        target: /usr/local/tomcat/logs
+
+  teachu-admin:
+    container_name: teachu-admin
+    build: ../teachu_admin.ui.html.app.war
+    depends_on:
+      - teachu-admin-server
+    links:
+      - teachu-admin-server
+    networks:
+      - teachu-net-admin
+    ports:
+      - "80:8080"
+    volumes:
+      - type: bind
+        source: ./logs/ui-log
+        target: /usr/local/tomcat/logs
+
+networks:
+  teachu-net-admin:
+
+volumes:
+  teachu-data:

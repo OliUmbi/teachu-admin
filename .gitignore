@@ -53,3 +53,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+teachu_admin/docker/logs/server-log/*.txt
+teachu_admin/docker/logs/server-log/*.log
+teachu_admin/docker/logs/ui-log/*.txt
+teachu_admin/docker/logs/ui-log/*.log
