@@ -10,6 +10,7 @@ import ch.teachu.teachu_admin.shared.lesson.LessonFormData;
 import ch.teachu.teachu_admin.shared.lesson.RoomLookupCall;
 import ch.teachu.teachu_admin.shared.lesson.WeekdayCodeType;
 import ch.teachu.teachu_admin.shared.schoolclass.subject.SchoolClassSubjectLookupCall;
+import ch.teachu.teachu_admin.shared.timetable.TimetableLookupCall;
 import org.eclipse.scout.rt.client.dto.FormData;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.action.menu.IMenuType;
@@ -18,19 +19,16 @@ import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
-import org.eclipse.scout.rt.client.ui.form.fields.datefield.AbstractTimeField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
-import org.eclipse.scout.rt.platform.exception.VetoException;
 import org.eclipse.scout.rt.platform.text.TEXTS;
 import org.eclipse.scout.rt.platform.util.CollectionUtility;
 import org.eclipse.scout.rt.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
-import java.util.Date;
 import java.util.Set;
 
 @FormData(value = LessonFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
@@ -60,10 +58,6 @@ public class LessonForm extends AbstractForm {
     return getFieldByClass(CancelButton.class);
   }
 
-  public GroupBox.FromField getFromField() {
-    return getFieldByClass(GroupBox.FromField.class);
-  }
-
   public GroupBox.RoomField getRoomField() {
     return getFieldByClass(GroupBox.RoomField.class);
   }
@@ -72,8 +66,8 @@ public class LessonForm extends AbstractForm {
     return getFieldByClass(GroupBox.SubjectField.class);
   }
 
-  public GroupBox.ToField getToField() {
-    return getFieldByClass(GroupBox.ToField.class);
+  public GroupBox.TimetableField getTimetableField() {
+    return getFieldByClass(GroupBox.TimetableField.class);
   }
 
   public GroupBox.WeekdayField getWeekdayField() {
@@ -151,10 +145,10 @@ public class LessonForm extends AbstractForm {
       }
 
       @Order(1500)
-      public class FromField extends AbstractTimeField {
+      public class TimetableField extends AbstractSmartField<String> {
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("FromDate");
+          return TEXTS.get("Timetable");
         }
 
         @Override
@@ -163,44 +157,8 @@ public class LessonForm extends AbstractForm {
         }
 
         @Override
-        protected Date execValidateValue(Date rawValue) {
-          if (getToField().getValue() != null && !getToField().getValue().after(rawValue)) {
-            throw new VetoException(TEXTS.get("ToNotAfterFrom"));
-          }
-          if (BEANS.get(ILessonService.class).overlapsWithOtherLessons(id, rawValue, getToField().getValue(), getWeekdayField().getValue(), schoolClassId)) {
-            throw new VetoException(TEXTS.get("OverlapsWithOtherLessons"));
-          }
-
-          getToField().clearErrorStatus();
-          getWeekdayField().clearErrorStatus();
-          return rawValue;
-        }
-      }
-
-      @Order(1750)
-      public class ToField extends AbstractTimeField {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("ToDate");
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected Date execValidateValue(Date rawValue) {
-          if (getFromField().getValue() != null && !rawValue.after(getFromField().getValue())) {
-            throw new VetoException(TEXTS.get("ToNotAfterFrom"));
-          }
-          if (BEANS.get(ILessonService.class).overlapsWithOtherLessons(id, getFromField().getValue(), rawValue, getWeekdayField().getValue(), schoolClassId)) {
-            throw new VetoException(TEXTS.get("OverlapsWithOtherLessons"));
-          }
-
-          getFromField().clearErrorStatus();
-          getWeekdayField().clearErrorStatus();
-          return rawValue;
+        protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
+          return TimetableLookupCall.class;
         }
       }
 
@@ -219,17 +177,6 @@ public class LessonForm extends AbstractForm {
         @Override
         protected boolean getConfiguredMandatory() {
           return true;
-        }
-
-        @Override
-        protected String execValidateValue(String rawValue) {
-          if (BEANS.get(ILessonService.class).overlapsWithOtherLessons(id, getFromField().getValue(), getToField().getValue(), rawValue, schoolClassId)) {
-            throw new VetoException(TEXTS.get("OverlapsWithOtherLessons"));
-          }
-
-          getToField().clearErrorStatus();
-          getFromField().clearErrorStatus();
-          return rawValue;
         }
       }
 

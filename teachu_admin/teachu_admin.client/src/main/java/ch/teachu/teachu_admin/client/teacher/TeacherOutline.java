@@ -4,6 +4,7 @@ import ch.teachu.teachu_admin.client.chatgroup.ChatGroupTablePage;
 import ch.teachu.teachu_admin.client.exam.ExamTablePage;
 import ch.teachu.teachu_admin.client.lesson.LessonTablePage;
 import ch.teachu.teachu_admin.client.schoolclass.TeacherSchoolClassTablePage;
+import ch.teachu.teachu_admin.client.student.StudentTablePage;
 import ch.teachu.teachu_admin.shared.Icons;
 import ch.teachu.teachu_admin.shared.TeacherPermission;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutline;
@@ -22,6 +23,7 @@ public class TeacherOutline extends AbstractOutline {
     pageList.add(new ExamTablePage());
     pageList.add(new LessonTablePage());
     pageList.add(new ChatGroupTablePage());
+    pageList.add(new StudentTablePage());
   }
 
   @Override

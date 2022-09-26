@@ -1,12 +1,10 @@
 package ch.teachu.teachu_admin.shared.lesson;
 
-import java.util.Date;
-
-import javax.annotation.Generated;
-
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
+
+import javax.annotation.Generated;
 
 /**
  * <b>NOTE:</b><br>
@@ -16,11 +14,7 @@ import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 public class LessonFormData extends AbstractFormData {
     private static final long serialVersionUID = 1L;
 
-    public From getFrom() {
-        return getFieldByClass(From.class);
-    }
-
-    /**
+  /**
      * access method for property Id.
      */
     public String getId() {
@@ -46,57 +40,53 @@ public class LessonFormData extends AbstractFormData {
      * access method for property SchoolClassId.
      */
     public String getSchoolClassId() {
-        return getSchoolClassIdProperty().getValue();
+      return getSchoolClassIdProperty().getValue();
     }
 
-    /**
-     * access method for property SchoolClassId.
-     */
-    public void setSchoolClassId(String schoolClassId) {
-        getSchoolClassIdProperty().setValue(schoolClassId);
-    }
+  /**
+   * access method for property SchoolClassId.
+   */
+  public void setSchoolClassId(String schoolClassId) {
+    getSchoolClassIdProperty().setValue(schoolClassId);
+  }
 
-    public SchoolClassIdProperty getSchoolClassIdProperty() {
-        return getPropertyByClass(SchoolClassIdProperty.class);
-    }
+  public SchoolClassIdProperty getSchoolClassIdProperty() {
+    return getPropertyByClass(SchoolClassIdProperty.class);
+  }
 
-    public Subject getSubject() {
-        return getFieldByClass(Subject.class);
-    }
+  public Subject getSubject() {
+    return getFieldByClass(Subject.class);
+  }
 
-    public To getTo() {
-        return getFieldByClass(To.class);
-    }
+  public Timetable getTimetable() {
+    return getFieldByClass(Timetable.class);
+  }
 
-    public Weekday getWeekday() {
-        return getFieldByClass(Weekday.class);
-    }
+  public Weekday getWeekday() {
+    return getFieldByClass(Weekday.class);
+  }
 
-    public static class From extends AbstractValueFieldData<Date> {
-        private static final long serialVersionUID = 1L;
-    }
+  public static class IdProperty extends AbstractPropertyData<String> {
+    private static final long serialVersionUID = 1L;
+  }
 
-    public static class IdProperty extends AbstractPropertyData<String> {
-        private static final long serialVersionUID = 1L;
-    }
+  public static class Room extends AbstractValueFieldData<String> {
+    private static final long serialVersionUID = 1L;
+  }
 
-    public static class Room extends AbstractValueFieldData<String> {
-        private static final long serialVersionUID = 1L;
-    }
+  public static class SchoolClassIdProperty extends AbstractPropertyData<String> {
+    private static final long serialVersionUID = 1L;
+  }
 
-    public static class SchoolClassIdProperty extends AbstractPropertyData<String> {
-        private static final long serialVersionUID = 1L;
-    }
+  public static class Subject extends AbstractValueFieldData<String> {
+    private static final long serialVersionUID = 1L;
+  }
 
-    public static class Subject extends AbstractValueFieldData<String> {
-        private static final long serialVersionUID = 1L;
-    }
+  public static class Timetable extends AbstractValueFieldData<String> {
+    private static final long serialVersionUID = 1L;
+  }
 
-    public static class To extends AbstractValueFieldData<Date> {
-        private static final long serialVersionUID = 1L;
-    }
-
-    public static class Weekday extends AbstractValueFieldData<String> {
-        private static final long serialVersionUID = 1L;
-    }
+  public static class Weekday extends AbstractValueFieldData<String> {
+    private static final long serialVersionUID = 1L;
+  }
 }

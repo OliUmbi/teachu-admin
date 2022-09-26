@@ -4,8 +4,6 @@ import org.eclipse.scout.rt.platform.service.IService;
 import org.eclipse.scout.rt.shared.TunnelToServer;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
-import java.util.Date;
-
 @TunnelToServer
 public interface ILessonService extends IService {
   LessonTablePageData getLessonTableData(SearchFilter filter, String schoolClassId);
@@ -19,6 +17,4 @@ public interface ILessonService extends IService {
   LessonFormData store(LessonFormData formData);
 
   void delete(String id);
-
-  boolean overlapsWithOtherLessons(String id, Date from, Date to, String weekday, String schoolClassId);
 }

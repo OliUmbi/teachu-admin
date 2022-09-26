@@ -8,6 +8,7 @@ import ch.teachu.teachu_admin.client.schoolconfig.SchoolConfigTablePage;
 import ch.teachu.teachu_admin.client.schoolinfo.SchoolInfoTablePage;
 import ch.teachu.teachu_admin.client.semester.SemesterTablePage;
 import ch.teachu.teachu_admin.client.subject.SubjectTablePage;
+import ch.teachu.teachu_admin.client.timetable.TimetableTablePage;
 import ch.teachu.teachu_admin.client.user.UserTablePage;
 import ch.teachu.teachu_admin.shared.AdminPermission;
 import ch.teachu.teachu_admin.shared.Icons;
@@ -34,6 +35,7 @@ public class AdminOutline extends AbstractOutline {
     pageList.add(new RoomTablePage());
     pageList.add(new AdminSchoolClassTablePage());
     pageList.add(new ChatGroupTablePage());
+    pageList.add(new TimetableTablePage());
   }
 
   @Override
