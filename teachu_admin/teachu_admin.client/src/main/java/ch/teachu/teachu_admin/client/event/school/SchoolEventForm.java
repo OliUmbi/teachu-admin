@@ -141,7 +141,7 @@ public class SchoolEventForm extends AbstractForm {
 
           @Override
           protected Date execValidateValue(Date rawValue) {
-            if (getToField().getValue() != null && rawValue.equals(getToField().getValue()) && !getToField().getValue().after(rawValue)) {
+            if (getToField().getValue() != null && !rawValue.equals(getToField().getValue()) && !getToField().getValue().after(rawValue)) {
               throw new VetoException(TEXTS.get("ToNotAfterFrom"));
             }
             return rawValue;
@@ -162,7 +162,7 @@ public class SchoolEventForm extends AbstractForm {
 
           @Override
           protected Date execValidateValue(Date rawValue) {
-            if (getFromField().getValue() != null && rawValue.equals(getFromField().getValue()) && !rawValue.after(getFromField().getValue())) {
+            if (getFromField().getValue() != null && !rawValue.equals(getFromField().getValue()) && !rawValue.after(getFromField().getValue())) {
               throw new VetoException(TEXTS.get("ToNotAfterFrom"));
             }
             return rawValue;

@@ -126,7 +126,7 @@ public class UserTablePage extends AbstractTablePage<Table> {
 
       @Override
       protected int getConfiguredWidth() {
-        return 80;
+        return 150;
       }
 
       @Override

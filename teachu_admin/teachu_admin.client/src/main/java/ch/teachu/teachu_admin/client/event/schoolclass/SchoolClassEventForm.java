@@ -1,7 +1,11 @@
 package ch.teachu.teachu_admin.client.event.schoolclass;
 
-import ch.teachu.teachu_admin.shared.event.schoolclass.*;
-import ch.teachu.teachu_admin.shared.semester.ISemesterService;
+import ch.teachu.teachu_admin.client.event.schoolclass.SchoolClassEventForm.MainBox.CancelButton;
+import ch.teachu.teachu_admin.client.event.schoolclass.SchoolClassEventForm.MainBox.GroupBox;
+import ch.teachu.teachu_admin.client.event.schoolclass.SchoolClassEventForm.MainBox.OkButton;
+import ch.teachu.teachu_admin.shared.event.schoolclass.ISchoolClassEventService;
+import ch.teachu.teachu_admin.shared.event.schoolclass.SchoolClassEventCodeType;
+import ch.teachu.teachu_admin.shared.event.schoolclass.SchoolClassEventFormData;
 import org.eclipse.scout.rt.client.dto.FormData;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
@@ -15,10 +19,6 @@ import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
 import org.eclipse.scout.rt.platform.exception.VetoException;
 import org.eclipse.scout.rt.platform.text.TEXTS;
-
-import ch.teachu.teachu_admin.client.event.schoolclass.SchoolClassEventForm.MainBox.CancelButton;
-import ch.teachu.teachu_admin.client.event.schoolclass.SchoolClassEventForm.MainBox.GroupBox;
-import ch.teachu.teachu_admin.client.event.schoolclass.SchoolClassEventForm.MainBox.OkButton;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 
 import java.util.Date;
@@ -139,7 +139,7 @@ public class SchoolClassEventForm extends AbstractForm {
 
         @Override
         protected Date execValidateValue(Date rawValue) {
-          if (getToField().getValue() != null && !getToField().getValue().after(rawValue)) {
+          if (getToField().getValue() != null && !rawValue.equals(getFromField().getValue()) && !getToField().getValue().after(rawValue)) {
             throw new VetoException(TEXTS.get("ToNotAfterFrom"));
           }
 

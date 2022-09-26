@@ -22,9 +22,12 @@ public class LessonService implements ILessonService {
 
     if (schoolClassId != null) {
       sql.append("WHERE school_class_id = UUID_TO_BIN(:inSchoolClassId) ");
+    } else {
+      sql.append("WHERE school_class_subject.teacher_id = UUID_TO_BIN(:userId) ");
     }
     sql.append("INTO :id, :subject, :startTime, :endTime, :weekday, :room, :schoolClass");
-    SQL.selectInto(sql.toString(), new NVPair("inSchoolClassId", schoolClassId), pageData);
+    SQL.selectInto(sql.toString(), new NVPair("inSchoolClassId", schoolClassId),
+      new NVPair("userId", BEANS.get(AccessHelper.class).getCurrentUserId()), pageData);
     return pageData;
   }
 
