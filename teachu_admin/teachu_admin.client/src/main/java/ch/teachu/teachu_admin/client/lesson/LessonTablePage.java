@@ -1,5 +1,6 @@
 package ch.teachu.teachu_admin.client.lesson;
 
+import ch.teachu.teachu_admin.client.event.lesson.LessonEventTablePage;
 import ch.teachu.teachu_admin.client.lesson.LessonTablePage.Table;
 import ch.teachu.teachu_admin.client.shared.AbstractCreateMenu;
 import ch.teachu.teachu_admin.client.shared.AbstractDeleteMenu;
@@ -13,12 +14,12 @@ import ch.teachu.teachu_admin.shared.lesson.WeekdayCodeType;
 import ch.teachu.teachu_admin.shared.schoolclass.SchoolClassLookupCall;
 import ch.teachu.teachu_admin.shared.schoolclass.subject.SchoolClassSubjectLookupCall;
 import org.eclipse.scout.rt.client.dto.Data;
-import org.eclipse.scout.rt.client.ui.action.menu.IMenu;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractTimeColumn;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.messagebox.IMessageBox;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBoxes;
 import org.eclipse.scout.rt.platform.BEANS;
@@ -50,13 +51,13 @@ public class LessonTablePage extends AbstractTablePage<Table> {
   }
 
   @Override
-  protected boolean getConfiguredLeaf() {
-    return true;
+  protected void execLoadData(SearchFilter filter) {
+    importPageData(BEANS.get(ILessonService.class).getLessonTableData(filter, schoolClassId));
   }
 
   @Override
-  protected void execLoadData(SearchFilter filter) {
-    importPageData(BEANS.get(ILessonService.class).getLessonTableData(filter, schoolClassId));
+  protected IPage<?> execCreateChildPage(ITableRow row) {
+    return new LessonEventTablePage(getTable().getIdColumn().getValue(row));
   }
 
   @Override
@@ -91,11 +92,6 @@ public class LessonTablePage extends AbstractTablePage<Table> {
 
     public WeekdayColumn getWeekdayColumn() {
       return getColumnSet().getColumnByClass(WeekdayColumn.class);
-    }
-
-    @Override
-    protected Class<? extends IMenu> getConfiguredDefaultMenu() {
-      return EditMenu.class;
     }
 
     @Order(0)
